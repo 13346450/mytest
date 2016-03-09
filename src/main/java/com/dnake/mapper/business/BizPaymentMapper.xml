@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizPaymentMapper">
+	<resultMap type="BizPayment" id="BizPayment">
+		<id column="idKey" property="idKey" />
+		<result column="paymentDate" property="paymentDate" />
+		<result column="type" property="type" />
+		<result column="alipayParams" property="alipayParams" />
+		<result column="alipayOutTradeNo" property="alipayOutTradeNo" />
+		<result column="alipayTradeNo" property="alipayTradeNo" />
+		<result column="alipayBody" property="alipayBody" />
+		<result column="alipayBuyerEmail" property="alipayBuyerEmail" />
+		<result column="alipayBuyerId" property="alipayBuyerId" />
+		<result column="alipayDiscount" property="alipayDiscount" />
+		<result column="alipayGmtCreate" property="alipayGmtCreate" />
+		<result column="alipayGmtPayment" property="alipayGmtPayment" />
+		<result column="alipayIsTotalFeeAdjust" property="alipayIsTotalFeeAdjust" />
+		<result column="alipayNotifyId" property="alipayNotifyId" />
+		<result column="alipayNotifyTime" property="alipayNotifyTime" />
+		<result column="alipayNotifyType" property="alipayNotifyType" />
+		<result column="alipayUseCoupon" property="alipayUseCoupon" />
+		<result column="alipayPaymentType" property="alipayPaymentType" />
+		<result column="alipayPrice" property="alipayPrice" />
+		<result column="alipayQuantity" property="alipayQuantity" />
+		<result column="alipaySellerEmail" property="alipaySellerEmail" />
+		<result column="alipaySellerId" property="alipaySellerId" />
+		<result column="alipaySign" property="alipaySign" />
+		<result column="alipaySignType" property="alipaySignType" />
+		<result column="alipaySubject" property="alipaySubject" />
+		<result column="alipayTotalFee" property="alipayTotalFee" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizPayment"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_payment(
+			idKey,
+			type,
+			alipayParams,
+			alipayOutTradeNo,
+			alipayTradeNo,
+			alipayTradeStatus,
+			paymentDate,
+			alipayBody,
+			alipayBuyerEmail,
+			alipayBuyerId,
+			alipayDiscount,
+			alipayGmtCreate,
+			alipayGmtPayment,
+			alipayIsTotalFeeAdjust,
+			alipayNotifyId,
+			alipayNotifyTime,
+			alipayNotifyType,
+			alipayUseCoupon,
+			alipayPaymentType,
+			alipayPrice,
+			alipayQuantity,
+			alipaySellerEmail,
+			alipaySellerId,
+			alipaySign,
+			alipaySignType,
+			alipaySubject,
+			alipayTotalFee
+		)
+		values(
+			#{idKey},
+			#{type},
+			#{alipayParams},
+			#{alipayOutTradeNo},
+			#{alipayTradeNo},
+			#{alipayTradeStatus},
+			#{paymentDate},
+			#{alipayBody},
+			#{alipayBuyerEmail},
+			#{alipayBuyerId},
+			#{alipayDiscount},
+			#{alipayGmtCreate},
+			#{alipayGmtPayment},
+			#{alipayIsTotalFeeAdjust},
+			#{alipayNotifyId},
+			#{alipayNotifyTime},
+			#{alipayNotifyType},
+			#{alipayUseCoupon},
+			#{alipayPaymentType},
+			#{alipayPrice},
+			#{alipayQuantity},
+			#{alipaySellerEmail},
+			#{alipaySellerId},
+			#{alipaySign},
+			#{alipaySignType},
+			#{alipaySubject},
+			#{alipayTotalFee}
+			
+		)
+	</insert>
+	<select id="queryByOrderId" resultMap="BizPayment" parameterType="java.lang.String">
+		select * from biz_payment where alipayOutTradeNo=#{orderId} and alipayTradeStatus='TRADE_SUCCESS'
+	</select>
+</mapper>

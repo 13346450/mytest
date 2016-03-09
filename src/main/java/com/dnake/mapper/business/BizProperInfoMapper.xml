@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizProperInfoMapper">
+	<resultMap type="BizProperInfo" id="bizProperInfoMap">
+		<id column="id_key" property="idKey" />
+		<result column="info_title" property="infoTitle" />
+		<result column="info_type" property="infoType" />
+		<result column="info_content" property="infoContent" />
+		<result column="community_id" property="communityId" />
+		<result column="images_url" property="imagesUrl" />
+		<result column="links_url" property="linksUrl" />
+		<result column="publish_id" property="publishId" />
+		<result column="create_id" property="createId" />
+		<result column="create_dt" property="createDt" />
+		<result column="publish_dt" property="publishDt" />
+		<result column="info_status" property="infoStatus" />
+
+		<result column="last_updated" property="lastUpdated" />
+		<result column="oindex" property="oindex" />
+		<result column="expiration_time" property="expirationTime" />
+		<result column="flag" property="flag" />
+		<result column="user_type" property="userType" />
+		<result column="community_code" property="communityCode" />
+		<result column="lh_id" property="lhID" />
+	</resultMap>
+
+	<resultMap type="BizProperInfoVO" id="bizProperInfoList">
+		<id column="id_key" property="idKey" />
+		<result column="info_title" property="infoTitle" />
+		<result column="info_type" property="infoType" />
+		<result column="info_content" property="infoContent" />
+		<result column="community_id" property="communityId" />
+		<result column="images_url" property="imagesUrl" />
+		<result column="links_url" property="linksUrl" />
+		<result column="publish_id" property="publishId" />
+		<result column="create_dt" property="createDt" />
+		<result column="publish_dt" property="publishDt" />
+		<result column="info_status" property="infoStatus" />
+
+		<result column="publish_name" property="publishName" />
+		<result column="create_name" property="createName" />
+		<result column="community_name" property="communityName" />
+		<result column="remark" property="remark" />
+		<result column="status_name" property="statusName" />
+		<result column="type_name" property="typeName" />
+		<result column="type_id" property="typeId" />
+		<result column="proper_name" property="properName" />
+
+		<result column="last_updated" property="lastUpdated" />
+		<result column="oindex" property="oindex" />
+		<result column="expiration_time" property="expirationTime" />
+		<result column="flag" property="flag" />
+		<result column="user_type" property="userType" />
+		<result column="community_code" property="communityCode" />
+		<result column="id" property="ID" />
+	</resultMap>
+
+	<!-- 更新物业信息状态 -->
+	<update id="updateStatus" parameterType="java.util.Map">
+		update biz_properinfo
+		<set>
+			<if test="oper == 'publish'">
+				publish_id = #{publishId}, publish_dt = #{publishDt}, info_status =
+				#{infoStatus}
+			</if>
+		</set>
+		where id_key = #{idKey}
+	</update>
+	<!-- 更新物业信息 -->
+	<update id="update" parameterType="BizProperInfo">
+		update biz_properinfo
+		<set>
+			<if test='infoTitle!= null and infoTitle!=""'>
+				info_title = #{infoTitle},
+			</if>
+			<if test='infoType!= null and infoType!=""'>
+				info_type = #{infoType},
+			</if>
+			<if test='infoContent!= null and infoContent!=""'>
+				info_content = #{infoContent},
+			</if>
+			<if test='communityId!= null and communityId!=""'>
+				community_id = #{communityId},
+			</if>
+			<if test='linksUrl!= null and linksUrl!=""'>
+				links_url = #{linksUrl},
+			</if>
+			<if test='imagesUrl!= null and imagesUrl!=""'>
+				images_url = #{imagesUrl},
+			</if>
+			<if test='publishId!= null and publishId!=""'>
+				publish_id = #{publishId},
+			</if>
+			<if test='createId!= null and createId!=""'>
+				create_id = #{createId},
+			</if>
+			<if test='createDt!= null and createDt!=""'>
+				create_dt = #{createDt},
+			</if>
+			<if test='publishDt!= null and publishDt!=""'>
+				publish_dt = #{publishDt},
+			</if>
+			<if test='infoStatus!= null and infoStatus!=""'>
+				info_status = #{infoStatus},
+			</if>
+			<if test='lastUpdated!= null and lastUpdated!=""'>
+				last_updated = #{lastUpdated},
+			</if>
+			<if test='oindex!= null and oindex!=""'>
+				oindex = #{oindex},
+			</if>
+			<if test='expirationTime!= null and expirationTime!=""'>
+				expiration_time = #{expirationTime},
+			</if>
+			<if test='flag!= null and flag!=""'>
+				flag = #{flag},
+			</if>
+			<if test='userType!= null and userType!=""'>
+				user_type = #{userType},
+			</if>
+			<if test='communityCode!= null and communityCode!=""'>
+				community_code = #{communityCode},
+			</if>
+			<if test='lhID!= null and lhID!=""'>
+				lh_id = #{lhID},
+			</if>
+		</set>
+		where id_key = #{idKey}
+	</update>
+	<!-- 删除物业信息 -->
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_properinfo
+		where id_key = #{idKey}
+	</delete>
+	<!-- 插入物业信息 -->
+	<insert id="insert" parameterType="BizProperInfo"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_properinfo
+		(id_key, info_title, info_type, info_content,
+		publish_id, create_id, create_dt, publish_dt, info_status,
+		community_id, last_updated, oindex, expiration_time, flag, user_type,
+		community_code, lh_id)
+		values
+		(#{idKey} ,#{infoTitle},
+		#{infoType}, #{infoContent}, #{publishId}, #{createId}, #{createDt},
+		#{publishDt}, #{infoStatus}, #{communityId}, #{lastUpdated},
+		#{oindex}, #{expirationTime}, #{flag}, #{userType}, #{communityCode},
+		#{lhID})
+	</insert>
+	<!-- 根据ID查找物业信息 -->
+	<select id="queryById" parameterType="java.lang.Long" resultMap="bizProperInfoMap">
+		select * from biz_properinfo where id_key = #{idKey}
+	</select>
+
+	<!-- 根据ID查找物业信息 -->
+	<select id="queryByCommunityId" parameterType="java.lang.Long"
+		resultMap="bizProperInfoList">
+		select * from biz_properinfo where community_id =
+		#{communityId}
+	</select>
+	<!-- 分页查询 -->
+	<select id="queryPage" parameterType="Page" resultMap="bizProperInfoList">
+		select a.*, b.cd_nm as publish_name, c.cu_name as community_name,
+		d.category_name as type_name, e.cd_nm as create_name,
+		if(a.info_status=1,"已发布","未发布") as status_name
+		from biz_properinfo a
+		LEFT JOIN sys_user b on a.publish_id = b.id_key
+		LEFT JOIN sys_community c on a.community_id = c.id_key
+		LEFT JOIN biz_category d on a.info_type = d.id_key
+		LEFT JOIN sys_user e on a.create_id = e.id_key
+		<where>
+			a.create_dt between #{params.startDatetime} and #{params.endDatetime}
+			<if test='params.infoStatus != -1 and params.infoStatus !=null'>
+				and a.info_status = #{params.infoStatus}
+			</if>
+			<if test='params.communityId != -1 and params.communityId !=null'>
+				and a.community_id = #{params.communityId}
+			</if>
+			<if test=' params.communityIds !=null'>
+				and a.community_id in <foreach item="item" index="index"  collection="params.communityIds"    open="(" separator="," close=")"> #{params.communityIds[${index}]}</foreach>   
+			</if>
+		</where>
+		order by a.create_dt desc
+	</select>
+	<!-- 手机端查询页面 -->
+	<select id="queryForMobile" parameterType="Page" resultMap="bizProperInfoList">
+		select a.*, b.cd_nm as publish_name from biz_properinfo a
+		LEFT JOIN sys_user b on a.publish_id = b.id_key
+		<where>
+			a.info_type = #{params.proInfoType} and a.info_status = 1 and a.community_id =
+			#{params.communityId}
+		</where>
+	</select>
+	<!-- 手机端查询详细物业信息 -->
+	<select id="queryForDetail" parameterType="java.lang.Long"
+		resultMap="bizProperInfoList">
+		select a.*, b.cd_nm as publish_name, c.pro_name as proper_name,
+		c.cu_name as community_name, d.category_name as type_name, e.cd_nm as
+		create_name
+		from biz_properinfo a
+		LEFT JOIN sys_user b on a.publish_id = b.id_key
+		LEFT JOIN sys_community c
+		on a.community_id = c.id_key
+		LEFT JOIN biz_category d on a.info_type =
+		d.id_key
+		LEFT JOIN sys_user e on a.create_id = e.id_key
+		<where>
+			a.id_key = #{idKey}
+		</where>
+	</select>
+	<!-- 多行删除 -->
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_properinfo where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<!-- 更新物业信息 -->
+	<update id="updateByDate" parameterType="BizProperInfo">
+		update biz_properinfo
+		<set>
+			<if test='infoTitle!= null and infoTitle!=""'>
+				info_title = #{infoTitle},
+			</if>
+			<if test='infoType!= null and infoType!=""'>
+				info_type = #{infoType},
+			</if>
+			<if test='infoContent!= null and infoContent!=""'>
+				info_content = #{infoContent},
+			</if>
+			<if test='communityId!= null and communityId!=""'>
+				community_id = #{communityId},
+			</if>
+			<if test='linksUrl!= null and linksUrl!=""'>
+				links_url = #{linksUrl},
+			</if>
+			<if test='imagesUrl!= null and imagesUrl!=""'>
+				images_url = #{imagesUrl},
+			</if>
+			<if test='publishId!= null and publishId!=""'>
+				publish_id = #{publishId},
+			</if>
+			<if test='createId!= null and createId!=""'>
+				create_id = #{createId},
+			</if>
+			<if test='createDt!= null and createDt!=""'>
+				create_dt = #{createDt},
+			</if>
+			<if test='publishDt!= null and publishDt!=""'>
+				publish_dt = #{publishDt},
+			</if>
+			<if test='infoStatus!= null and infoStatus!=""'>
+				info_status = #{infoStatus},
+			</if>
+			<if test='lastUpdated!= null and lastUpdated!=""'>
+				last_updated = #{lastUpdated},
+			</if>
+			<if test='oindex!= null and oindex!=""'>
+				oindex = #{oindex},
+			</if>
+			<if test='expirationTime!= null and expirationTime!=""'>
+				expiration_time = #{expirationTime},
+			</if>
+			<if test='flag!= null and flag!=""'>
+				flag = #{flag},
+			</if>
+			<if test='userType!= null and userType!=""'>
+				user_type = #{userType}
+			</if>
+			<if test='communityCode!= null and communityCode!=""'>
+				community_code = #{communityCode}
+			</if>
+		</set>
+		where publish_dt = #{publishDt} and info_title = #{infoTitle}
+	</update>
+	<!-- 根据ID查找物业信息 -->
+	<select id="queryByDate" parameterType="BizProperInfo"
+		resultMap="bizProperInfoList">
+		select * from biz_properinfo where publish_dt = #{publishDt}
+		and info_title = #{infoTitle}
+	</select>
+	<select id="getByLhId" parameterType="int" resultMap="bizProperInfoMap">
+		select * from biz_properinfo where lh_id = #{id}
+	</select>
+	
+</mapper>

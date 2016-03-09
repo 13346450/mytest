@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizRefundMapper">
+	<resultMap type="BizRefund" id="bizRefundMap">
+		<id column="id_key" property="idKey" />
+		<result column="refund_type" property="refundType" />
+		<result column="order_id" property="orderId" />
+		<result column="refund_reason" property="refundReason" />
+		<result column="refund_money" property="refundMoney" />
+		<result column="refund_dt" property="refundDt" />
+		<result column="refund_explain" property="refundExplain" />
+		<result column="image_one" property="imageOne" />
+		<result column="image_two" property="imageTwo" />
+		<result column="image_three" property="imageThree" />
+		<result column="image_four" property="imageFour" />
+	</resultMap>
+
+	<resultMap type="BizRefundVO" id="bizRefundList">
+		<id column="id_key" property="idKey" />
+		<result column="refund_type" property="refundType" />
+		<result column="order_id" property="orderId" />
+		<result column="refund_reason" property="refundReason" />
+		<result column="refund_money" property="refundMoney" />
+		<result column="refund_dt" property="refundDt" />
+		<result column="refund_explain" property="refundExplain" />
+		<result column="image_one" property="imageOne" />
+		<result column="image_two" property="imageTwo" />
+		<result column="image_three" property="imageThree" />
+		<result column="image_four" property="imageFour" />
+
+
+	</resultMap>
+
+	<insert id="insert" parameterType="BizRefund" useGeneratedKeys="true"
+		keyProperty="idKey">
+		insert into biz_refund(
+		id_key,refund_type,order_id,refund_reason,refund_money,refund_dt,refund_explain,image_one,image_two,image_three,image_four)
+		values(
+		#{idKey},#{refundType},#{orderId},#{refundReason},#{refundMoney},#{refundDt},#{refundExplain},#{imageOne},#{imageTwo},#{imageThree},#{imageFour})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_refund where id_key=#{idKey}
+	</delete>
+
+	<update id="update" parameterType="BizRefund">
+		update biz_refund
+		<set>
+			<if test='refundType!= null and refundType!=""'>
+				refund_type=#{refundType},
+			</if>
+			<if test='orderId!= null and orderId!=""'>
+				order_id=#{orderId},
+			</if>
+			<if test='refundReason!= null and refundReason!=""'>
+				refund_reason=#{refundReason},
+			</if>
+			<if test='refundMoney!= null and refundMoney!=""'>
+				refund_money=#{refundMoney},
+			</if>
+			<if test='refundDt!= null and refundDt!=""'>
+				refund_dt=#{refundDt},
+			</if>
+			<if test='refundExplain!= null and refundExplain!=""'>
+				refund_explain=#{refundExplain},
+			</if>
+			<if test='imageOne!= null and imageOne!=""'>
+				image_one=#{imageOne},
+			</if>
+			<if test='imageTwo!= null and imageTwo!=""'>
+				image_two=#{imageTwo},
+			</if>
+			<if test='imageThree!= null and imageThree!=""'>
+				image_three=#{imageThree},
+			</if>
+			<if test='imageFour!= null and imageFour!=""'>
+				image_four=#{imageFour},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+	<select id="queryByIdkey" resultMap="bizRefundMap"
+		parameterType="java.lang.Long">
+		select * from biz_refund where id_key=#{idKey}
+	</select>
+
+	<select id="queryPage" resultMap="bizRefundList" parameterType="Page">
+		null
+		<!--<where> chg_dt between #{params.startDatetime} and #{params.endDatetime} 
+			<if test='params.name != null and params.name != ""'> and br.name=#{params.name} 
+			</if> </where> -->
+	</select>
+
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_refund where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into biz_refund(
+		refund_type,order_id,refund_reason,refund_money,refund_dt,refund_explain,image_one,image_two,image_three,image_four)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.refundType},#{item.orderId},#{item.refundReason},#{item.refundMoney},#{item.refundDt},#{item.refundExplain},#{item.imageOne},#{item.imageTwo},#{item.imageThree},#{item.imageFour})
+		</foreach>
+	</insert>
+	
+	<select id="queryByOrderId" resultMap="bizRefundMap" parameterType="java.lang.Long">
+		select * from biz_refund where order_id=#{orderId}
+	</select>
+</mapper>

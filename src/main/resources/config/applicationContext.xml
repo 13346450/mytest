@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+	xsi:schemaLocation="  
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-3.2.xsd  
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- 自定义的属性解析文件 -->
+	<bean id="appPropertyConfigurer" class="com.dnake.common.PropertyConfigurer"
+		abstract="false" lazy-init="default" autowire="default">
+		<property name="locations">
+			<list>
+				<value>classpath:/config/database-druid.properties</value>
+				<!-- 导入@Scheduled参数 -->
+				<value>classpath:/config/parms.properties</value>
+			</list>
+		</property>
+		<property name="decodePropertyNames">
+			<list>
+				<value>database.dev.username</value>
+				<value>database.dev.password</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 数据源配置，用c3p0取代apache的dbcp ， destory-method是否需要 -->
+	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
+		destroy-method="close"> <property name="driverClass"> <value>${database.driver}</value> 
+		</property> <property name="jdbcUrl"> <value>${database.dev.url}</value> 
+		</property> <property name="user"> <value>${database.dev.username}</value> 
+		</property> <property name="password"> <value>${database.dev.password}</value> 
+		</property> <property name="initialPoolSize"> <value>${database.initialPoolSize}</value> 
+		</property> <property name="minPoolSize"> <value>${database.minPoolSize}</value> 
+		</property> <property name="maxPoolSize"> <value>${database.maxPoolSize}</value> 
+		</property> <property name="maxIdleTime"> <value>${database.maxIdleTime}</value> 
+		</property> <property name="idleConnectionTestPeriod"> <value>${database.idleConnectionTestPeriod}</value> 
+		</property> <property name="checkoutTimeout"> <value>${database.checkoutTimeout}</value> 
+		</property> </bean> -->
+	<!-- 连接池采用alibaba druid 20141017 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<!-- 配置基本属性 -->
+		<property name="url" value="${database.dev.url}" />
+		<property name="username" value="${database.dev.username}" />
+		<property name="password" value="${database.dev.password}" />
+		<property name="driverClassName" value="${database.driver}" />
+		<!-- 配置初始化，最小，最大的连接数量 -->
+		<property name="initialSize" value="${database.initialPoolSize}" />
+		<property name="minIdle" value="${database.minPoolSize}" />
+		<property name="maxActive" value="${database.maxPoolSize}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${database.checkoutTimeout}" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${database.timeBetweenEvictionRunsMillis}" />
+
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${database.minEvictableIdleTimeMillis}" />
+
+		<property name="validationQuery" value="${database.validationQuery}" />
+		<property name="testWhileIdle" value="${database.testWhileIdle}" />
+		<property name="testOnBorrow" value="${database.testOnBorrow}" />
+		<property name="testOnReturn" value="${database.testOnReturn}" />
+
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${database.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${database.maxOpenPreparedStatements}" />
+
+		<!-- 配置监控统计拦截的filters -->
+		<property name="filters" value="${database.filters}" />
+	</bean>
+	<!-- MyBatis sqlSessionFactory 配置 mybatis -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation">
+			<value>classpath:/config/mybatis-config.xml</value>
+		</property>
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- MapperScannerConfigurer会寻找指定包下的Mapper并自动将它们注册到到MapperFactoryBean代理工厂， 
+		这个代理工厂可以让你的mapper interface直接注入到其他bean中，而你完全不需要实现这个接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.dnake.mapper" />
+	</bean>
+
+	<!-- JDBC模板 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 用注解来实现事务管理,采用全注解方式，无需配置 proxy-target-class="true" -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 扫描service层 (事务管理配置需在此扫描service层) -->
+	<context:component-scan base-package="com.dnake.service" />
+	<!-- 激活spring@Scheduled -->
+	<task:annotation-driven />
+	<!-- 扫描@Scheduled (做spring任务执行器) -->
+	<context:component-scan base-package="com.dnake.tasks" />
+	<!-- 允许对静态资源文件的访问,REST风格。可不写 <mvc:default-servlet-handler/> -->
+
+	<!-- 支持jsonp转换 开始
+	<mvc:annotation-driven
+		content-negotiation-manager="contentNegotiationManager">
+		<mvc:message-converters register-defaults="false">
+			<ref bean="fastJsonHttpMessageConverter" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<bean id="contentNegotiationManager"
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" value="true" />
+		<property name="ignoreAcceptHeader" value="false" />
+		<property name="mediaTypes">
+			<value>
+				json=application/json
+				xml=application/xml
+			</value>
+		</property>
+	</bean>
+	
+	
+	<bean id="fastJsonHttpMessageConverter" class="com.dnake.utils.FastJsonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+				<value>text/html;charset=UTF-8</value>
+			</list>
+		</property>
+		<property name="features">
+			<list>
+				<value>WriteNullBooleanAsFalse</value>
+				<value>QuoteFieldNames</value>
+				<value>WriteDateUseDateFormat</value>
+				<value>WriteNullStringAsEmpty</value>
+			</list>
+		</property>
+	</bean>
+	 支持jsonp转换 结束-->
+	
+	<!-- 总异常处理 -->
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Throwable">/errors/error</prop>
+				<!-- 遇到MaxUploadSizeExceededException异常时，自动跳转到/WEB-INF/jsp/error_fileupload.jsp页面 -->
+				<prop
+					key="org.springframework.web.multipart.MaxUploadSizeExceededException">/errors/error</prop>
+				<!-- 验证异常，统一响应 -->
+				<prop key="com.dnake.common.error.ValidateError">errors/com.dnake.common.error.ValidateError</prop>
+				<!-- 业务异常，统一响应 -->
+				<prop key="com.dnake.common.error.ServiceError">errors/com.dnake.common.error.ServiceError</prop>
+			</props>
+		</property>
+		<property name="statusCodes">
+			<props>
+				<prop key="/errors/error">411</prop>
+			</props>
+		</property>
+		<!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+		<property name="warnLogCategory" value="WARN"></property>
+		<!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
+		<property name="defaultErrorView" value="/errors/error" />
+		<!-- 默认HTTP状态码 -->
+		<property name="defaultStatusCode" value="500" />
+	</bean>
+
+
+	<!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring 
+		bean对象 -->
+	<bean class="com.dnake.common.SpringContextHolder" lazy-init="false" />
+
+	<!-- 国际化配置 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="config/messages" />
+	</bean>
+
+	<!-- 设置上传文件的最大尺寸为100MB -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>104857600</value>
+		</property>
+	</bean>
+
+	
+
+</beans>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizOrderMapper">
+	<resultMap type="BizOrder" id="bizOrderMap">
+		<id column="id_key" property="idKey" />
+		<result column="order_number" property="orderNumber" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="sales_id" property="salesId" />
+		<result column="shop_id" property="shopId" />
+		<result column="sales_name" property="salesName" />
+		<result column="payment_type" property="paymentType" />
+		<result column="order_status" property="orderStatus" />
+		<result column="order_cost" property="orderCost" />
+		<result column="shop_gift" property="shopGift" />
+		<result column="other_gift" property="otherGift" />
+		<result column="shop_get" property="shopGet" />
+		<result column="user_cost" property="userCost" />
+		<result column="order_dt" property="orderDt" />
+		<result column="order_telephone" property="orderTelephone" />
+		<result column="order_addr" property="orderAddr" />
+		<result column="receiver" property="receiver" />
+		<result column="delivery_time" property="deliveryTime" />
+		<result column="message" property="message" />
+	</resultMap>
+
+	<resultMap type="BizOrderVO" id="bizOrderList">
+		<id column="id_key" property="idKey" />
+		<result column="order_number" property="orderNumber" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="sales_id" property="salesId" />
+		<result column="shop_id" property="shopId" />
+		<result column="sales_name" property="salesName" />
+		<result column="payment_type" property="paymentType" />
+		<result column="order_status" property="orderStatus" />
+		<result column="order_cost" property="orderCost" />
+		<result column="shop_gift" property="shopGift" />
+		<result column="other_gift" property="otherGift" />
+		<result column="shop_get" property="shopGet" />
+		<result column="user_cost" property="userCost" />
+		<result column="order_dt" property="orderDt" />
+		<result column="order_telephone" property="orderTelephone" />
+		<result column="order_addr" property="orderAddr" />
+		<result column="receiver" property="receiver" />
+		<result column="delivery_time" property="deliveryTime" />
+		<result column="message" property="message" />
+		<result column="sales_count" property="salesCount" />
+
+		<result column="sales_name" property="salesName" />
+		<result column="shop_name" property="shopName" />
+		<result column="user_name" property="userName" />
+		<result column="order_status_name" property="orderStatusName" />
+		<result column="payment_type_name" property="paymentTypeName" />
+		<result column="sales_telephone" property="salesTelephone" />
+	</resultMap>
+
+
+	<insert id="insert" parameterType="BizOrder" useGeneratedKeys="true"
+		keyProperty="idKey">
+		insert into biz_order(
+		id_key,order_number,user_id,user_name,sales_id,shop_id,sales_name,payment_type,order_status,order_cost,shop_gift,other_gift,shop_get,user_cost,order_dt,order_telephone,order_addr,receiver,delivery_time,message)
+		values(
+		#{idKey},#{orderNumber},#{userId},#{userName},#{salesId},#{shopId},#{salesName},#{paymentType},#{orderStatus},#{orderCost},#{shopGift},#{otherGift},#{shopGet},#{userCost},#{orderDt},#{orderTelephone},#{orderAddr},#{receiver},#{deliveryTime},#{message})
+	</insert>
+	<!-- 插入多条 -->
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into biz_order(
+		order_number,user_id,user_name,sales_id,shop_id,sales_name,payment_type,order_status,order_cost,shop_gift,other_gift,shop_get,user_cost,order_dt,order_telephone,order_addr,receiver,delivery_time,message)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.orderNumber},#{item.userId},#{item.userName},#{item.salesId},#{item.shopId},#{item.salesName},#{item.paymentType},#{item.orderStatus},#{item.orderCost},#{item.shopGift},#{item.otherGift},#{item.shopGet},#{item.userCost},#{item.orderDt},#{item.orderTelephone},#{item.orderAddr},#{item.receiver},#{item.deliveryTime},#{item.message})
+		</foreach>
+	</insert>
+	
+	<select id="mobileQuerySalesCount" resultMap="bizOrderList" parameterType="java.lang.Long">
+		select count(*) as sales_count from biz_order_details a 
+		LEFT JOIN biz_order b on b.id_key = a.order_id 
+		where a.goods_id = #{goodsId} and b.order_status = 5 
+	</select>
+	
+	<select id="queryByIdkey" resultMap="bizOrderMap" parameterType="java.lang.Long">
+		select * from biz_order where id_key=#{idKey}
+	</select>
+	<select id="queryPage" resultMap="bizOrderList" parameterType="Page">
+		select a.*,bp.name as shop_name,su.cd_nm as user_name,bp.telephone as sales_telephone,
+		if(a.order_status=0,"等待商家接单",
+		if(a.order_status=1,"买家取消订单",
+		if(a.order_status=2,"商家已接单",
+		if(a.order_status=3,"商家已拒绝该单",
+		if(a.order_status=4,"正在配送中",
+		if(a.order_status=6,"买家未付款",
+		if(a.order_status=7,"买家已付款",
+		if(a.order_status=8,"货到付款",
+		if(a.order_status=9,"退款中",
+		if(a.order_status=10,"交易关闭",
+		if(a.order_status=11,"退款失败",
+		if(a.order_status=12,"退款成功",
+		if(a.order_status=5,"交易完成","未知状态"))))))))))))) as
+		order_status_name,
+		if(a.payment_type=0,"在线支付",if(a.payment_type=1,"货到付款","其他付款方式")) as
+		payment_type_name
+		from biz_order a left join biz_shop bp on bp.id_key=a.shop_id left join sys_user su on su.id_key=a.user_id 
+		<where>
+			<if test='params.startDatetime != null and params.endDatetime!=null'>
+				a.order_dt between #{params.startDatetime} and
+				#{params.endDatetime}
+			</if>
+			<if test='params.orderStatus != null and params.orderStatus!=-1 and params.orderStatus!=-2 and params.orderStatus!=-3 and params.orderStatus!=0'>
+				and a.order_status = #{params.orderStatus}
+			</if>
+			<!--  住户版待收货状态-->
+			<if test='params.orderStatus != null and params.orderStatus==-2'>
+				and a.order_status in (0,2,4,7,8) 
+			</if>
+			<!-- 商户版待接订单状态 -->
+			<if test='params.orderStatus != null and params.orderStatus==0'>
+				and a.order_status in (7,8,9) 
+			</if>
+			<if test='params.orderStatus != null and params.orderStatus==-3'>
+				and a.order_status in (9,11,12) 
+			</if>
+			<if test='params.orderNotStatus != null and params.orderNotStatus!=-1'>
+				and a.order_status != #{params.orderNotStatus}
+			</if>
+			<if test='params.userId != null and params.userId!=-1'>
+				and a.user_id = #{params.userId}
+			</if>
+			<if test='params.salesId != null and params.salesId !=-1'>
+				and a.sales_id = #{params.salesId}
+			</if>
+			<if test='params.salesName != null and params.salesName != "" '>
+				 and a.sales_name like concat('%',#{params.salesName},'%')
+			</if>
+			<if test='params.shopName != null and params.shopName !=""'>
+				and bp.name like concat('%',#{params.shopName},'%')
+			</if>
+			<if test=' params.communityIds !=null'>
+				and bp.community_id in <foreach item="item" index="index"  collection="params.communityIds"    open="(" separator="," close=")"> #{params.communityIds[${index}]}</foreach>   
+			</if>
+		</where>
+		order by a.order_dt desc
+	</select>
+
+	<select id="queryOrderBySalesId" resultMap="bizOrderList"
+		parameterType="java.lang.Long">
+		select a.*,
+		if(a.order_status=0,"等待商家接单",
+		if(a.order_status=1,"买家取消订单",
+		if(a.order_status=2,"商家已接单",
+		if(a.order_status=3,"商家已拒绝该单",
+		if(a.order_status=4,"正在配送中",
+		if(a.order_status=6,"买家未付款",
+		if(a.order_status=7,"买家已付款",
+		if(a.order_status=8,"货到付款",
+		if(a.order_status=9,"退款中",
+		if(a.order_status=10,"交易关闭",
+		if(a.order_status=11,"退款失败",
+		if(a.order_status=12,"退款成功",
+		if(a.order_status=5,"交易完成","未知状态"))))))))))))) as
+		order_status_name,
+		if(a.payment_type=0,"在线支付",if(a.payment_type=1,"货到付款","其他付款方式")) as
+		payment_type_name
+		from biz_order a
+		where a.order_status = 0 and
+		a.sales_id = #{idKey}
+		order by a.order_dt desc
+	</select>
+	<!-- 多行删除 -->
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete a.*,b.* from biz_order a, biz_order_details b where a.id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+		and
+		b.order_id in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<update id="update" parameterType="BizOrder">
+		update biz_order
+		<set>
+			<if test='orderStatus != null'>
+				order_status = #{orderStatus},
+			</if>
+			<if test='paymentType != null'>
+				payment_type = #{paymentType},
+			</if>
+		</set>
+		where id_key = #{idKey}
+	</update>
+	
+	<update id="updateOrderForTimeTask">
+		update biz_order set order_status=10 
+		where id_key in
+        <foreach item="item" index="index" collection="idKeys" open="(" separator="," close=")">${item}</foreach>  
+	</update>
+	
+	<select id="queryOrderForTimeTask"  resultMap="bizOrderMap">
+		select a.* from biz_order  a
+		RIGHT JOIN biz_order_details b on a.id_key = b.order_id
+		RIGHT JOIN biz_goods c on c.id_key = b.goods_id and c.goods_status = 6
+		where #{0}>date_add(a.order_dt, interval '00:00:30' hour_second) and a.order_status=6
+	</select>
+
+	<select id="queryOrderIsOnlyOne"  resultMap="bizOrderMap">
+		select a.* from biz_order a
+		RIGHT JOIN biz_order_details b on b.order_id = a.id_key 
+		RIGHT JOIN biz_goods c on c.id_key = b.goods_id and c.goods_status=6 
+		where #{0} &lt; DATE_ADD(a.order_dt ,interval '3' hour) and a.user_id = #{1} and a.order_status != 10
+		order by a.order_dt desc limit 1
+	</select>
+	
+	<select id="queryByOrderNum" resultMap="bizOrderMap" parameterType="java.lang.String">
+		select * from biz_order where order_number=#{orderNum}
+	</select>
+	
+	<select id="queryByIsPayment" resultMap="bizOrderMap" parameterType="java.lang.Long">
+		select a.* from biz_order a 
+		RIGHT JOIN biz_order_num b on b.order_num = a.order_number
+		RIGHT JOIN biz_payment c on c.alipayOutTradeNo = b.alipay_order_num and c.alipayTradeStatus='TRADE_SUCCESS'
+		where a.id_key = #{orderId}
+	</select>
+</mapper>

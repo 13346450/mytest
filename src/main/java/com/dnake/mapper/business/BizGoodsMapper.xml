@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizGoodsMapper">
+	<resultMap type="BizGoods" id="bizGoodsMap">
+		<id column="id_key" property="idKey" />
+		<result column="goods_type_id" property="goodsTypeId" />
+		<result column="goods_name" property="goodsName" />
+		<result column="goods_Order" property="goodsOrder" />
+		<result column="goods_addr" property="goodsAddr" />
+		<result column="telephone" property="telephone" />
+		<result column="unit_price" property="unitPrice" />
+		<result column="discount_price" property="discountPrice" />
+		<result column="quantity" property="quantity" />
+		<result column="sales_id" property="salesId" />
+		<result column="shop_id" property="shopId" />
+		<result column="goods_status" property="goodsStatus" />
+		<result column="goods_note" property="goodsNote" />
+		<result column="simages" property="simages" />
+		<result column="limages" property="limages" />
+		<result column="upload_dt" property="uploadDt" />
+		<result column="show_simages" property="showSimages" />
+		<result column="show_limages" property="showLimages" />
+		<result column="community_id" property="communityId" />
+		<result column="sales_count" property="salesCount" />
+		<result column="auto_put_on_time" property="autoPutOnTime" />
+	</resultMap>
+
+	<resultMap type="BizGoodsVO" id="bizGoodsList">
+		<id column="id_key" property="idKey" />
+		<result column="goods_type_id" property="goodsTypeId" />
+		<result column="goods_name" property="goodsName" />
+		<result column="goods_Order" property="goodsOrder" />
+		<result column="goods_addr" property="goodsAddr" />
+		<result column="telephone" property="telephone" />
+		<result column="unit_price" property="unitPrice" />
+		<result column="discount_price" property="discountPrice" />
+		<result column="quantity" property="quantity" />
+		<result column="sales_id" property="salesId" />
+		<result column="shop_id" property="shopId" />
+		<result column="goods_status" property="goodsStatus" />
+		<result column="goods_note" property="goodsNote" />
+		<result column="simages" property="simages" />
+		<result column="limages" property="limages" />
+		<result column="upload_dt" property="uploadDt" />
+		<result column="show_simages" property="showSimages" />
+		<result column="show_limages" property="showLimages" />
+		<result column="community_id" property="communityId" />
+		<result column="sales_count" property="salesCount" />
+		<result column="auto_put_on_time" property="autoPutOnTime" />
+
+		<result column="goods_status_name" property="goodsStatusName" />
+		<result column="shop_name" property="shopName" />
+		<result column="category_name" property="goodsType" />
+	</resultMap>
+
+	<select id="edit" parameterType="java.lang.Long" resultMap="bizGoodsMap">
+		select * from biz_goods where id_key = #{idKey}
+	</select>
+
+	<select id="mobileQueryGoodsDetails" resultMap="bizGoodsList"
+		parameterType="java.lang.Long">
+		select a.*,b.cd_nm as sales_name,
+		c.category_name,(select count(*) as sales_count from biz_order_details
+		a
+		LEFT JOIN biz_order b on b.id_key = a.order_id
+		where a.goods_id = #{id} and b.order_status = 5 ) as sales_count,
+		if(a.goods_status=0,"未审核", if(a.goods_status=1,"未上架",
+		if(a.goods_status=2,"销售中",
+		if(a.goods_status=3,"被管理员下架",if(a.goods_status=6,"活动商品上架",if(a.goods_status=7,"活动商品定时上架","未知状态"))))))
+		as
+		goods_status_name
+		from biz_goods a
+		left join sys_user b on a.shop_id=b.id_key
+		left join biz_category c on
+		a.goods_type_id=c.id_key
+		left join sys_community d on
+		b.dept_id=d.id_key
+		where a.id_key=#{id}
+	</select>
+
+	<update id="update" parameterType="BizGoods">
+		update biz_goods
+		<set>
+			<if test='goodsTypeId != null'>
+				goods_type_id = #{goodsTypeId},
+			</if>
+			<if test='goodsName != null'>
+				goods_name = #{goodsName},
+			</if>
+			<if test='goodsOrder != null'>
+				goods_Order = #{goodsOrder},
+			</if>
+			<if test='goodsAddr != null'>
+				goods_addr = #{goodsAddr},
+			</if>
+			<if test='telephone != null'>
+				telephone = #{telephone},
+			</if>
+			<if test='unitPrice != null'>
+				unit_price = #{unitPrice},
+			</if>
+			<if test='quantity != null'>
+				quantity = #{quantity},
+			</if>
+			<if test='salesId != null'>
+				sales_id = #{salesId},
+			</if>
+			<if test='shopId != null'>
+				shop_id = #{shopId},
+			</if>
+			<if test='goodsStatus != null'>
+				goods_status = #{goodsStatus},
+			</if>
+			<if test='goodsNote != null'>
+				goods_note = #{goodsNote},
+			</if>
+			<if test='simages != null'>
+				simages = #{simages},
+			</if>
+			<if test='limages != null'>
+				limages = #{limages},
+			</if>
+			<if test='showSimages != null'>
+				show_simages = #{showSimages},
+			</if>
+			<if test='showLimages != null'>
+				show_limages = #{showLimages},
+			</if>
+			<if test='uploadDt != null'>
+				upload_dt = #{uploadDt},
+			</if>
+			<if test='discountPrice != null'>
+				discount_price = #{discountPrice},
+			</if>
+			<if test='communityId != null'>
+				community_id = #{communityId},
+			</if>
+			<if test='!(goodsStatus == 7 and autoPutOnTime == null)'><!-- 当商品状态为定时上架(7),并且自动上架参数为null时，不更新该自动上架 -->
+				auto_put_on_time = #{autoPutOnTime}
+			</if>
+		</set>
+		where id_key = #{idKey}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_goods where
+		id_key = #{idKey}
+	</delete>
+
+	<insert id="insert" parameterType="BizGoods" useGeneratedKeys="true"
+		keyProperty="idKey">
+		insert into biz_goods
+		(id_key, goods_type_id,goods_name,
+		goods_Order,
+		goods_addr, telephone,
+		unit_price,quantity,sales_id,goods_status,goods_note,simages, limages,
+		upload_dt,show_simages,show_limages,shop_id,discount_price,community_id,auto_put_on_time)
+		values
+		(#{idKey},#{goodsTypeId},#{goodsName},#{goodsOrder},#{goodsAddr},#{telephone},#{unitPrice},#{quantity},#{salesId},
+		#{goodsStatus},#{goodsNote},#{simages},#{limages},#{uploadDt},#{showSimages},#{showLimages},#{shopId},#{discountPrice},#{communityId},#{autoPutOnTime}
+		)
+	</insert>
+
+	<select id="queryPage" resultMap="bizGoodsList" parameterType="Page">
+		select
+		a.id_key,a.goods_type_id,a.goods_name,a.goods_Order,a.goods_addr,a.telephone,a.unit_price,a.sales_id,a.shop_id,a.goods_note,a.simages,a.limages,a.show_simages,a.show_limages,a.upload_dt,a.goods_status,a.quantity,a.discount_price,
+		a.community_id,
+		if(a.goods_status=0,"未审核", if(a.goods_status=1,"未上架",
+		if(a.goods_status=2,"销售中",
+		if(a.goods_status=3,"被管理员下架",if(a.goods_status=6,"活动商品上架",if(a.goods_status=7,"活动商品定时上架","未知状态"))))))
+		as
+		goods_status_name,a.auto_put_on_time,
+		bs.name as
+		shop_name,c.category_name from biz_goods a
+		left join biz_shop bs on
+		bs.id_key=a.shop_id
+		left join biz_category c on
+		a.goods_type_id=c.id_key
+		<where>
+			c.id_key is not null
+			<if test='params.communityId != -1 and params.communityId !=null'>
+				and bs.community_id = #{params.communityId}
+			</if>
+			<if test='params.goodsTypeId != -1 and params.goodsTypeId != null'>
+				and a.goods_type_id = #{params.goodsTypeId}
+			</if>
+			<if test='params.salesId != -1 and params.salesId != null'>
+				and a.sales_id=#{params.salesId}
+			</if>
+			<if test='params.shopId != -1 and params.shopId != null'>
+				and a.shop_id=#{params.shopId}
+			</if>
+			<if test='params.shopStatus!=-1 and params.shopStatus!=null'>
+				and bs.status=#{params.shopStatus}
+			</if>
+			<if
+				test='params.goodsStatus!=-1 and params.goodsStatus!=null and params.goodsStatus!=6'>
+				and a.goods_status=#{params.goodsStatus}
+			</if>
+			<if test='params.goodsStatus==6'>
+				and (a.goods_status=6 or a.goods_status=7)
+			</if>
+			<if test='params.modelId != -1 and params.modelId !=null'>
+				and
+				find_in_set(a.goods_type_id,queryChildrenCategory(#{params.modelId}))
+			</if>
+		</where>
+		order by a.upload_dt desc
+	</select>
+
+	<!-- 多行删除 -->
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_goods where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+	<!--强制下架 -->
+	<update id="pullOffMulti" parameterType="java.util.Map">
+		update biz_goods set
+		goods_status=#{goodsStatus},auto_put_on_time=#{autoPutOnTime} where
+		id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">#{item}</foreach>
+	</update>
+
+	<select id="queryAllPageFromParentCategory" resultMap="bizGoodsList"
+		parameterType="Page">
+		select
+		a.id_key,a.goods_type_id,a.goods_name,a.goods_Order,a.goods_addr,a.telephone,a.unit_price,a.sales_id,a.shop_id,a.goods_note,a.simages,a.limages,a.show_simages,a.show_limages,a.upload_dt,a.goods_status,a.quantity,a.community_id,
+		if(a.goods_status=0,"未审核", if(a.goods_status=1,"未上架",
+		if(a.goods_status=2,"销售中",
+		if(a.goods_status=3,"被管理员下架",if(a.goods_status=6,"活动商品上架",if(a.goods_status=7,"活动商品定时上架","未知状态"))))))
+		as
+		goods_status_name,a.discount_price,bs.name as
+		shop_name,a.auto_put_on_time,
+		b.cd_nm as salesName,c.category_name from
+		biz_goods a
+		left join biz_shop bs on bs.id_key=a.shop_id
+		left join
+		sys_user b on bs.user_id=b.id_key
+		left join biz_category c on
+		a.goods_type_id=c.id_key
+		left join
+		sys_community d on b.dept_id=d.id_key
+		<where>
+			c.id_key is not null
+			<if test='params.communityId != -1 and params.communityId !=null'>
+				and a.community_id = #{params.communityId}
+			</if>
+			<if test='params.salesId != null'>
+				and a.sales_id=#{params.salesId}
+			</if>
+			<if test='params.goodsStatus!=-1 and params.goodsStatus!=null'>
+				and a.goods_status=#{params.goodsStatus}
+			</if>
+			<!-- <if test='params.goodsTypeId != null and params.communityId !=-1 
+				and params.communityId !=""'> and find_in_set(a.goods_type_id,queryChildrenCategory(#{params.goodsTypeId})) 
+				</if> -->
+			<if test='params.salesName != null and params.salesName != "" '>
+				and b.cd_nm like concat('%',#{params.salesName},'%')
+			</if>
+			<if test='params.shopName != null and params.shopName != "" '>
+				and bs.name like concat('%',#{params.shopName},'%')
+			</if>
+			<if test=' params.communityIds !=null'>
+				and a.community_id in
+				<foreach item="item" index="index" collection="params.communityIds"
+					open="(" separator="," close=")"> #{params.communityIds[${index}]}
+				</foreach>
+			</if>
+		</where>
+		order by a.upload_dt desc
+	</select>
+
+	<select id="queryDiscountPriceByIds" parameterType="java.util.Map"
+		resultMap="bizGoodsMap">
+		select a.* from biz_goods a where a.id_key in
+		<foreach item="item" index="index" collection="idKeys" open="("
+			separator="," close=")">${item}</foreach>
+	</select>
+	<!-- 自动上架商品 -->
+	<update id="autoPutOn">
+		update biz_goods set
+		goods_status=6,auto_put_on_time=null where auto_put_on_time between
+		#{0} and #{1}
+	</update>
+
+	<select id="queryByIdKey" parameterType="java.lang.Long"
+		resultMap="bizGoodsMap">
+		select * from biz_goods where id_key = #{idKey}
+	</select>
+</mapper>

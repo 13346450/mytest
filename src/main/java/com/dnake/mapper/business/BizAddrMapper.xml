@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizAddrMapper">
+	<resultMap type="BizAddr" id="bizAddrMap">
+		<id column="id_key" property="idKey" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="phone_num" property="phoneNum" />
+		<result column="postalcode" property="postalcode" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="district" property="district" />
+		<result column="community_id" property="communityId" />
+		<result column="address_detail" property="addressDetail" />
+		<result column="remark" property="remark" />
+		<result column="is_default" property="isDefault" />
+	</resultMap>
+
+	<resultMap type="BizAddrVO" id="bizAddrList">
+		<id column="id_key" property="idKey" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="phone_num" property="phoneNum" />
+		<result column="postalcode" property="postalcode" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="district" property="district" />
+		<result column="community_id" property="communityId" />
+		<result column="address_detail" property="addressDetail" />
+		<result column="remark" property="remark" />
+		<result column="is_default" property="isDefault" />
+		
+		<result column="province_nm" property="provinceNm" />
+		<result column="city_nm" property="cityNm" />
+		<result column="district_nm" property="districtNm" />
+		<result column="community_nm" property="communityNm" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizAddr" useGeneratedKeys="true"
+		keyProperty="idKey">
+		insert into biz_addr(
+		id_key,user_id,user_name,phone_num,postalcode,province,city,district,community_id,address_detail,remark,is_default)
+		values(
+		#{idKey},#{userId},#{userName},#{phoneNum},#{postalcode},#{province},#{city},#{district},#{communityId},#{addressDetail},#{remark},#{isDefault})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_addr where id_key=#{idKey}
+	</delete>
+
+	<update id="update" parameterType="BizAddr">
+		update biz_addr
+		<set>
+			<if test='userId!= null and userId!=""'>
+				user_id=#{userId},
+			</if>
+			<if test='userName!= null and userName!=""'>
+				user_name=#{userName},
+			</if>
+			<if test='phoneNum!= null and phoneNum!=""'>
+				phone_num=#{phoneNum},
+			</if>
+			<if test='postalcode!= null and postalcode!=""'>
+				postalcode=#{postalcode},
+			</if>
+			<if test='province!= null and province!=""'>
+				province=#{province},
+			</if>
+			<if test='city!= null and city!=""'>
+				city=#{city},
+			</if>
+			<if test='district!= null and district!=""'>
+				district=#{district},
+			</if>
+			<if test='communityId!= null and communityId!=""'>
+				community_id=#{communityId},
+			</if>
+			<if test='addressDetail!= null and addressDetail!=""'>
+				address_detail=#{addressDetail},
+			</if>
+			<if test='remark!= null and remark!=""'>
+				remark=#{remark},
+			</if>
+			<if test='isDefault!= null and isDefault!=""'>
+				is_default=#{isDefault},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+	<select id="queryByIdkey" resultMap="bizAddrList" parameterType="java.lang.Long">
+		select a.*,b.cd_nm as province_nm, c.cd_nm as city_nm, d.cd_nm as district_nm, e.cu_name as community_nm  from biz_addr a 
+		left join sys_dept 		b on a.province=b.id_key 
+		left join sys_dept 		c on a.city=c.id_key 
+		left join sys_dept 		d on a.district=d.id_key 
+		left join sys_community e on a.community_id = e.id_key 
+		 <where>
+		 	a.id_key = #{idKey}
+		 </where>
+	</select>
+
+	<select id="queryPage" resultMap="bizAddrList" parameterType="Page">
+		null
+		<!--<where> chg_dt between #{params.startDatetime} and #{params.endDatetime} 
+			<if test='params.name != null and params.name != ""'> and br.name=#{params.name} 
+			</if> </where> -->
+	</select>
+
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_addr where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into biz_addr(
+		user_id,user_name,phone_num,postalcode,province,city,district,community_id,address_detail,remark,is_default)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.userId},#{item.userName},#{item.phoneNum},#{item.postalcode},#{item.province},#{item.city},#{item.district},#{item.communityId},#{item.addressDetail},#{item.remark},#{item.isDefault})
+		</foreach>
+	</insert>
+	
+	<select id="queryByUserId" resultMap="bizAddrList" parameterType="java.lang.Long">
+		select a.*,b.cd_nm as province_nm, c.cd_nm as city_nm, d.cd_nm as district_nm, e.cu_name as community_nm  from biz_addr a 
+		left join sys_dept 		b on a.province=b.id_key 
+		left join sys_dept 		c on a.city=c.id_key 
+		left join sys_dept 		d on a.district=d.id_key 
+		left join sys_community e on a.community_id = e.id_key 
+		 <where>
+		 	user_id = #{userId}
+		 </where>
+		 order by is_default desc
+	</select>
+	
+	<select id="queryByDefault" resultMap="bizAddrList" parameterType="BizAddr">
+		select * from biz_addr
+		 <where>
+		 	is_default = #{isDefault} and user_id = #{userId}
+		 </where>
+	</select>
+	
+	<update id="updateDefault" parameterType="BizAddr">
+		update biz_addr
+		<set>
+			is_default=#{isDefault}
+		</set>
+		<where>
+			<if test='idKey!= null and idKey!=""'>
+				id_key= #{idKey}
+			</if>
+			and user_id = #{userId}
+		</where>
+	</update>
+</mapper>

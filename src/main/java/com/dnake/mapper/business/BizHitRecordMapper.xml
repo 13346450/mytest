@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizHitRecordMapper">
+	<resultMap type="BizHitRecord" id="bizHitRecord">
+		<id column="id_key" property="idKey" />
+		<result column="user_id" property="userId" />
+		<result column="hit_dt" property="hitDate" />
+		<result column="chain_id" property="chainId" />
+	</resultMap>
+	
+	<resultMap type="BizHitRecordVO" id="bizHitRecordMapList">
+		<id column="id_key" property="idKey" />
+		<result column="user_id" property="userId" />
+		<result column="hit_dt" property="hitDate" />
+		<result column="chain_id" property="chainId" />
+			
+		<result column="chain_name" property="chainName" />
+		<result column="link_url" property="linkUrl" />
+	</resultMap>
+
+	<!-- 更新链接 -->
+	<update id="update" parameterType="BizHitRecord">
+		update biz_hit_record 
+		<set>
+	            user_id = #{userId},
+	            hit_dt = #{hitDate},
+	            chain_id = #{chainId},
+	    </set>
+	    where id_key = #{idKey}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_hit_record where id_key = #{idKey}
+	</delete>
+	
+	<insert id="insert" parameterType="BizHitRecord" useGeneratedKeys="true" keyProperty="idKey">		
+		insert into biz_hit_record
+		(id_key,user_id,hit_dt,chain_id)
+		values
+		(#{idKey},#{userId},#{hitDate},#{chainId})
+	</insert>
+	
+	<select id="queryByIdkey" parameterType="java.lang.Long" resultMap="bizHitRecord">
+		select * from biz_hit_record where id_key = #{idKey}
+	</select>
+	
+	<select id="queryPage" resultMap="bizHitRecordMapList" parameterType="Page">
+			select a.*,b.chain_name as chainName,b.link_url as linkUrl 
+			from biz_hit_record a
+			LEFT JOIN biz_chain b on a.chain_id=b.id_key
+			<where>
+				a.hit_dt between #{params.startDatetime} and #{params.endDatetime}
+			</where> 			
+	</select>
+		
+</mapper>

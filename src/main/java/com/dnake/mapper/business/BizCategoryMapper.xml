@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizCategoryMapper">
+	<resultMap type="BizCategory" id="bizCategoryMap">
+		<id column="id_key" property="idKey" />
+		<result column="category_name" property="categoryName" />
+		<result column="last_mark" property="lastMark" />
+		<result column="order_cd" property="orderCd" />
+		<result column="parent_id" property="parentId" />
+		<result column="isuse" property="isUse" />
+		<result column="chg_dt" property="chgDt" />
+		<result column="remark" property="remark" />
+		<result column="icon_url" property="iconUrl" />
+		<result column="simages" property="simages" />
+		<result column="limages" property="limages" />
+		<result column="show_simages" property="showSimages" />
+		<result column="show_limages" property="showLimages" />
+		<result column="community_id" property="communityId" />
+	</resultMap>
+
+	<resultMap type="BizCategoryVO" id="bizCategoryList">
+		<id column="id_key" property="idKey" />
+		<result column="category_name" property="categoryName" />
+		<result column="last_mark" property="lastMark" />
+		<result column="order_cd" property="orderCd" />
+		<result column="parent_id" property="parentId" />
+		<result column="isuse" property="isUse" />
+		<result column="chg_dt" property="chgDt" />
+		<result column="remark" property="remark" />
+		<result column="icon_url" property="iconUrl" />
+		<result column="simages" property="simages" />
+		<result column="limages" property="limages" />
+		<result column="show_simages" property="showSimages" />
+		<result column="show_limages" property="showLimages" />
+		<result column="community_id" property="communityId" />
+
+		<result column="community_name1" property="communityName" />
+	</resultMap>
+
+	<resultMap type="com.dnake.common.EasyUiTreeModel" id="bizCategoryTreeMap">
+		<id column="id_key" property="id" />
+		<result column="category_name" property="text" />
+		<result column="state" property="state" />
+		<!-- <result column="" property="iconCls" /> -->
+		<!-- <result column="" property="attributes"/> -->
+		<collection column="id_key" property="children"
+			select="queryChildrenByParentId1" />
+	</resultMap>
+
+	<select id="selectById" resultMap="bizCategoryMap"
+		parameterType="java.lang.Long">
+		select * from biz_category where id_key=#{idkey}
+	</select>
+	<select id="selectByParentId" resultMap="bizCategoryMap"
+		parameterType="java.lang.Long">
+		select * from biz_category where parent_id=#{parent_id}
+	</select>
+
+	<select id="queryChildrenByParentId" parameterType="java.lang.Long"
+		resultMap="bizCategoryMap">
+		select * from biz_category t where t.parent_id = #{parentId}
+		order by order_cd
+	</select>
+
+	<select id="mobileQueryByParentId" parameterType="java.lang.Long"
+		resultMap="bizCategoryMap">
+		select * from biz_category t where t.parent_id = #{parentId}
+		and id_key!=26 order by order_cd
+	</select>
+
+	<select id="edit" parameterType="java.lang.Long" resultMap="bizCategoryMap">
+		select * from biz_category t where t.id_key = #{idKey}
+	</select>
+
+	<update id="update" parameterType="BizCategory">
+		update biz_category
+		<set>
+			<if test='categoryName != "" and categoryName != null'>
+				category_name = #{categoryName},
+			</if>
+			<if test='lastMark != "" and lastMark != null'>
+				last_mark = #{lastMark},
+			</if>
+			<if test='parentId != "" and parentId != null'>
+				parent_id = #{parentId},
+			</if>
+			<if test='orderCd != "" and orderCd != null'>
+				order_cd = #{orderCd},
+			</if>
+			<if test='remark != null and remark!=""'>
+				remark = #{remark},
+			</if>
+			<if test='isUse != null and isUse!=""'>
+				isuse = #{isUse},
+			</if>
+			<if test='iconUrl != null and iconUrl!=""'>
+				icon_url = #{iconUrl},
+			</if>
+			<if test='simages != null and simages!=""'>
+				simages = #{simages},
+			</if>
+			<if test='limages != null and limages!=""'>
+				limages = #{limages},
+			</if>
+			<if test='showSimages != null and showSimages != ""'>
+				show_simages
+				= #{showSimages},
+			</if>
+			<if test='showLimages != null and showLimages != "" '>
+				show_limages = #{showSimages},
+			</if>
+			<if test='chgDt != "" and chgDt != null'>
+				chg_dt = #{chgDt},
+			</if>
+			<if test='communityId != "" and communityId != null'>
+				community_id = #{communityId},
+			</if>
+		</set>
+		where id_key = #{idKey}
+	</update>
+
+	<update id="updateLastMark" parameterType="java.util.Map">
+		update biz_category
+		SET last_mark = #{lastMark} WHERE id_key = #{idKey}
+	</update>
+
+	<update id="updateParentIdByIdKey" parameterType="java.util.Map">
+		update
+		biz_category SET parent_id = #{parentId} WHERE id_key = #{idKey}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_category where
+		id_key = #{idKey}
+	</delete>
+	<delete id="deleteByCommunityId" parameterType="java.lang.Long">
+		delete from
+		biz_category where community_id = #{communityId}
+	</delete>
+	<insert id="insert" parameterType="BizCategory"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_category
+		(id_key,
+		category_name, last_mark, parent_id, order_cd,
+		remark, isuse,
+		chg_dt,icon_url,simages,limages,show_simages,show_limages,community_id)
+		values
+		(#{idKey},#{categoryName},#{lastMark}, #{parentId}, #{orderCd},
+		#{remark}, #{isUse},
+		#{chgDt},#{iconUrl},#{simages},#{limages},#{showSimages},#{showLimages},#{communityId}
+		)
+	</insert>
+	<select id="queryAllChildrenIdByDeptId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		select t.id_key
+		from biz_category t
+		CONNECT BY PRIOR t.id_key=t.parent_id START WITH t.id_key=#{deptId}
+	</select>
+	<!-- 查询该单位所属的二级单位 -->
+	<select id="querySecondDeptId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		select a.id_key from biz_category a
+		where a.parent_id = 1
+		connect by prior a.parent_id = a.id_key
+		start with a.id_key = #{deptId}
+	</select>
+	<select id="queryMaxOrderCdByPId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		select max(order_cd)+10 from biz_category a where
+		a.parent_id = #{parentId}
+	</select>
+	<!-- xzmAdd20140102 根据单位ID查询 ParentId -->
+	<select id="getParentIdByDeptId" resultType="java.lang.Long"
+		parameterType="java.lang.Long">
+		select parent_id from biz_category where ID_KEY
+		=#{deptId}
+	</select>
+	<!-- xzmAdd20140115 根据单位ID查询查询自己和上级 管理单位名称 -->
+	<select id="queryGlDeptNameById" parameterType="java.lang.Long"
+		resultMap="bizCategoryMap">
+		select * from biz_category t where t.id_key=#{idKey} or
+		t.id_key=#{parentId}
+	</select>
+	<!-- xzmAdd20140115 维护单位名称 根据单位ID查询自己和下级 -->
+	<select id="queryWhDeptNameById" parameterType="java.lang.Long"
+		resultMap="bizCategoryMap">
+		select * from biz_category t where t.parent_id = #{idKey} or
+		t.id_key=#{idKey}
+	</select>
+	<select id="selectCategoryTree" parameterType="java.lang.Long"
+		resultMap="bizCategoryTreeMap">
+		select * from biz_category t where t.id_key = #{idKey}
+	</select>
+	<select id="queryChildrenByParentId1" parameterType="java.lang.Long"
+		resultMap="bizCategoryTreeMap">
+		select *,if(t.last_mark=0,'closed','') as state from
+		biz_category t where t.parent_id = #{id_key} and id_key not in
+		(52,63,75,84)
+	</select>
+
+	<select id="queryAllChildrenIdByCategoryId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		select * from biz_category where
+		find_in_set(id_key,queryChildrenCategory(#{idKey}))
+	</select>
+
+	<select id="queryAllLastChildrenIdByCategoryId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		select * from biz_category where
+		find_in_set(id_key,queryChildrenCategory(#{idKey})) and last_mark=0
+	</select>
+
+	<!-- 查询该小区类目的根目录 -->
+	<select id="queryRootByCommunityId" parameterType="java.lang.Long"
+		resultMap="bizCategoryMap">
+		select * from biz_category a where a.parent_id =-1 and
+		a.community_id=#{communityId}
+	</select>
+	
+	<select id="queryByNameAndCommunity"  resultMap="bizCategoryMap">
+		select * from biz_category a where a.category_name=#{1} and
+		a.community_id=#{0}
+	</select>
+	<!-- 插入小区的默认根目录 -->
+	<insert id="insertDefaultRoot" useGeneratedKeys="true"
+		keyProperty="idKey" parameterType="java.lang.Long">
+		INSERT INTO biz_category
+		(category_name, last_mark, parent_id, order_cd,
+		remark, isuse,
+		chg_dt,icon_url,simages,limages,show_simages,show_limages,community_id
+		) SELECT category_name, last_mark, -1, order_cd,
+		remark, isuse,
+		chg_dt,icon_url,simages,limages,show_simages,show_limages,#{communityId}
+		FROM biz_category WHERE community_id=10028 AND parent_id=-1;
+	</insert>
+
+	<insert id="insertDefault" useGeneratedKeys="true" keyProperty="idKey"
+		parameterType="java.lang.Long">
+		INSERT INTO biz_category (id_key,category_name, last_mark, parent_id,
+		order_cd,
+		remark, isuse,
+		chg_dt,icon_url,simages,limages,show_simages,show_limages,community_id
+		) SELECT id_key+( select max(id_key)-1 from biz_category),
+		category_name, last_mark, parent_id+( select max(id_key)-1 from
+		biz_category), order_cd,
+		remark, isuse,
+		chg_dt,icon_url,simages,limages,show_simages,show_limages,#{communityId}
+		FROM biz_category WHERE community_id=10028 AND parent_id!=-1;
+	</insert>
+
+	<select id="queryByParentNameAndCommunity" resultMap="bizCategoryMap">
+		select a.*
+		from biz_category a,biz_category b 
+		where a.parent_id=b.id_key 
+		  and	 a.community_id=#{0} and b.community_id=#{0} and b.category_name=#{1}
+		order by a.order_cd
+	</select>
+	<!-- 广告图片用的查询 -->
+	<select id="queryADCategory" resultMap="bizCategoryList"
+		parameterType="Page">
+		select t.* from (
+		select a.*,c.cu_name as community_name1 from biz_category
+		a,biz_category b,sys_community c where a.parent_id=b.id_key and
+		b.category_name='社区商城' AND a.community_id=c.id_key
+		
+			<if test='params.communityId != -1 and params.communityId !=null'>
+				and a.community_id = #{params.communityId}
+			</if>
+		<if test=' params.communityIds !=null'>
+				and a.community_id in <foreach item="item" index="index"  collection="params.communityIds"    open="(" separator="," close=")"> #{params.communityIds[${index}]}</foreach>   
+			</if>
+		
+		UNION ALL SELECT a.*,b.cu_name as community_name1 FROM biz_category
+		a,sys_community b WHERE a.parent_id=-1 AND a.community_id=b.id_key
+		
+			<if test='params.communityId != -1 and params.communityId !=null'>
+				and a.community_id = #{params.communityId}
+			</if>
+		<if test=' params.communityIds !=null'>
+				and a.community_id in <foreach item="item" index="index"  collection="params.communityIds"    open="(" separator="," close=")"> #{params.communityIds[${index}]}</foreach>   
+			</if>
+		ORDER BY community_id ,id_key) t
+	</select>
+	
+	
+</mapper>

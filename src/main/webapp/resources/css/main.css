@@ -1,0 +1,33 @@
+*{margin:0;padding:0;}
+A:link {
+	 COLOR: #0000ff;  TEXT-DECORATION: none
+}
+A:visited {
+	TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: #3333ff; TEXT-DECORATION: none
+}
+BODY {
+	SCROLLBAR-FACE-COLOR: #eeeaeb; FONT-SIZE: 9pt; SCROLLBAR-HIGHLIGHT-COLOR: #fbfdfc; SCROLLBAR-SHADOW-COLOR: #170708; SCROLLBAR-3DLIGHT-COLOR: #170708; SCROLLBAR-ARROW-COLOR: #000000; FONT-FAMILY: "����"; SCROLLBAR-DARKSHADOW-COLOR: #ffffff; SCROLLBAR-BASE-COLOR: #170708
+}
+TABLE {
+	FONT-SIZE: 9pt; LINE-HEIGHT: 130%; FONT-FAMILY: "����"
+}
+TR {
+	FONT-SIZE: 9pt; LINE-HEIGHT: 130%; FONT-FAMILY: "����"
+}
+TD {
+	FONT-SIZE: 9pt; LINE-HEIGHT: 130%; FONT-FAMILY: "����"
+}
+.treebg {
+	BACKGROUND-IMAGE: url(../images/treebg.gif)
+}
+.tree {
+	font-size: 12px;
+	background-color: #F0F7FC;
+	border: 1px solid #1B7EB6;
+}

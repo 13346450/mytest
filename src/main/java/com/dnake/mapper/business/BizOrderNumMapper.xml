@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizOrderNumMapper">
+	<resultMap type="BizOrderNum" id="bizOrderNumMap">
+		<id column="id_key" property="idKey" />
+		<result column="order_num" property="orderNum" />
+		<result column="alipay_order_num" property="alipayOrderNum" />
+		<result column="order_dt" property="orderDt" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizOrderNum"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_order_num(
+		id_key,order_num,alipay_order_num,order_dt)
+		values(
+		#{idKey},#{orderNum},#{alipayOrderNum},#{orderDt})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_order_num where id_key=#{idKey}
+	</delete>
+
+	<update id="update" parameterType="BizOrderNum">
+		update biz_order_num
+		<set>
+			<if test='orderNum!= null and orderNum!=""'>
+				order_num=#{orderNum},
+			</if>
+			<if test='alipayOrderNum!= null and alipayOrderNum!=""'>
+				alipay_order_num=#{alipayOrderNum},
+			</if>
+			<if test='orderDt!= null and orderDt!=""'>
+				order_dt=#{orderDt},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+	<select id="queryByIdkey" resultMap="bizOrderNumMap"
+		parameterType="java.lang.Long">
+		select * from biz_order_num where id_key=#{idKey}
+	</select>
+
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_order_num where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into biz_order_num(
+		order_num,alipay_order_num,order_dt)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.orderNum},#{item.alipayOrderNum},#{item.orderDt})
+		</foreach>
+	</insert>
+	<select id="queryByOrderNum" resultMap="bizOrderNumMap"
+		parameterType="java.lang.String">
+		select * from biz_order_num where order_num=#{orderNum}
+	</select>
+	
+</mapper>

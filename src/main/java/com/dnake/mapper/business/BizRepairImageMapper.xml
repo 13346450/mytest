@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizRepairImageMapper">
+	<resultMap type="BizRepairImage" id="bizRepairImageMap">
+		<id column="id_key" property="idKey" />
+		<result column="repair_id" property="repairId" />
+		<result column="image_url" property="imageUrl" />
+		<result column="image_type" property="type" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizRepairImage"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_repair_image(id_key,repair_id,image_url, image_type, remark)
+		values(#{idKey},#{repairId},#{imageUrl}, #{type}, #{remark})
+	</insert>
+
+	<delete id="deleteByRepairId" parameterType="java.lang.Long">
+		delete from biz_repair_image where repair_id=#{repairId}
+	</delete>
+
+	<select id="queryByRepairId" resultMap="bizRepairImageMap"
+		parameterType="java.util.Map">
+		select * from biz_repair_image where repair_id=#{repairId} and image_type = #{type}
+	</select>
+	
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_repair_image where id_key in
+		<foreach item="item" index="index" collection="imagesIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.system.SysDeptMapper">
+	<resultMap type="SysDept" id="sysDeptMap">
+		<id column="id_key" property="idKey" />
+		<result column="cd_nm" property="cdNm" />
+		<result column="last_mark" property="lastMark" />
+		<result column="parent_id" property="parentId" />
+		<result column="order_cd" property="orderCd"/>
+		<result column="remarks" property="remarks" />
+		<result column="isuse" property="isuse" />
+		<result column="dept_code" property="deptCode" />
+		<result column="is_branch" property="isBranch" />
+		<result column="chg_dt" property="chgDt" />
+	</resultMap>
+
+	<select id="queryChildrenByParentId" parameterType="java.lang.Long"
+		resultMap="sysDeptMap">
+		select * from sys_dept t where t.parent_id = #{parentId} order by order_cd 
+	</select>
+	
+	<select id="mobileQueryByParentId" parameterType="java.lang.Long"
+		resultMap="sysDeptMap">
+		select * from sys_dept t where t.parent_id = #{parentId} and id_key!=26 order by order_cd 
+	</select>
+	
+	<select id="edit" parameterType="java.lang.Long" resultMap="sysDeptMap">
+		select * from sys_dept t where t.id_key = #{idKey}
+	</select>
+
+	<update id="update" parameterType="SysDept">
+		update sys_dept 
+		<set>
+	        <if test='cdNm != "" and cdNm != null'>
+	            cd_nm = #{cdNm},
+	        </if>
+	        <if test='lastMark != "" and lastMark != null'>
+	            last_mark = #{lastMark},
+	        </if>
+	        <if test='parentId != "" and parentId != null'>
+	            parent_id = #{parentId},
+	        </if>
+	        <if test='orderCd != "" and orderCd != null'>
+	            order_cd = #{orderCd},
+	        </if>
+	        <if test='remarks != null'>
+	            remarks = #{remarks},
+	        </if>
+	        <if test='isuse != null'>
+	            isuse = #{isuse},
+	        </if>
+	        <if test='deptCode != "" and deptCode != null'>
+	            dept_code = #{deptCode},
+	        </if>
+	        <if test='isBranch != null'>
+	            is_branch = #{isBranch},
+	        </if>
+	        <if test='chgDt != "" and chgDt != null'>
+	            chg_dt = #{chgDt},
+	        </if>
+	    </set>
+	    where id_key = #{idKey}
+	</update>
+	
+	<update id="updateLastMark" parameterType="java.util.Map">
+		update sys_dept SET last_mark = #{lastMark} WHERE id_key = #{idKey}
+	</update>
+	
+	<update id="updateParentIdByIdKey" parameterType="java.util.Map">
+		update sys_dept SET parent_id = #{parentId} WHERE id_key = #{idKey}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_dept where id_key = #{idKey}
+	</delete>
+
+	<insert id="insert" parameterType="SysDept" useGeneratedKeys="true" keyProperty="idKey">
+		insert into sys_dept
+		(id_key, cd_nm, last_mark, parent_id, order_cd,
+		remarks, isuse, dept_code,
+		is_branch, chg_dt)
+		values
+		(#{idKey},#{cdNm},#{lastMark}, #{parentId}, #{orderCd}, #{remarks}, #{isuse},
+		#{deptCode}, #{isBranch}, #{chgDt})
+	</insert>
+	<select id="queryAllChildrenIdByDeptId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select t.id_key 
+		  from sys_dept t 
+		CONNECT BY PRIOR t.id_key=t.parent_id START WITH t.id_key=#{deptId}
+	</select>
+	<!-- 查询该单位所属的二级单位 -->
+	<select id="querySecondDeptId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select a.id_key from sys_dept a 
+		 where a.parent_id = 1
+		 connect by prior a.parent_id = a.id_key
+		 start with a.id_key = #{deptId}
+	</select>
+	<select id="queryMaxOrderCdByPId" parameterType="java.lang.Long" resultType="java.lang.Long">
+		select max(order_cd)+10 from sys_dept a where a.parent_id = #{parentId}
+	 </select>
+	 <!-- xzmAdd20140102 根据单位ID查询 ParentId-->
+	 <select id="getParentIdByDeptId" resultType="java.lang.Long" parameterType="java.lang.Long">
+		select parent_id from sys_dept where ID_KEY =#{deptId} 
+	</select>
+	 <!-- xzmAdd20140115 根据单位ID查询查询自己和上级 管理单位名称-->
+	<select id="queryGlDeptNameById" parameterType="java.lang.Long"
+		resultMap="sysDeptMap">
+		select * from sys_dept t where t.id_key=#{idKey} or t.id_key=#{parentId}
+	</select>
+	 <!-- xzmAdd20140115 维护单位名称 根据单位ID查询自己和下级 -->
+	<select id="queryWhDeptNameById" parameterType="java.lang.Long"
+		resultMap="sysDeptMap">
+		select * from sys_dept t where t.parent_id = #{idKey} or t.id_key=#{idKey}
+	</select>
+</mapper>

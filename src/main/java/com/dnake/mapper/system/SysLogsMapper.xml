@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.system.SysLogsMapper">
+	<resultMap type="SysLogs" id="sysLogsMap">
+		<id column="id_key" property="idKey" />
+		<result column="func_menu_nm" property="funcMenuNm" />
+		<result column="func_oper_nm" property="funcOperNm" />
+		<result column="oper_id" property="operId" />
+		<result column="oper_nm" property="operNm"/>
+		<result column="oper_remark" property="operRemark" />
+		<result column="oper_dt" property="operDt" />
+	</resultMap>
+
+	<select id="edit" parameterType="java.lang.Long"
+		resultMap="sysLogsMap">
+		select * from sys_logs t where t.id_key = #{idKey}
+	</select>
+
+	<update id="update" parameterType="SysLogs">
+		update sys_logs 
+		<set>
+	        <if test='funcMenuNm != "" and funcMenuNm != null'>
+	            func_menu_nm = #{funcMenuNm},
+	        </if>
+	        <if test='funcOperNm != "" and funcOperNm != null'>
+	            func_oper_nm = #{funcOperNm},
+	        </if>
+	        <if test='operId != null'>
+	            oper_id = #{operId},
+	        </if>
+	        <if test='operNm != "" and operNm != null'>
+	            oper_nm = #{operNm},
+	        </if>
+	        <if test='operRemark != "" and operRemark != null'>
+	            oper_remark = #{operRemark},
+	        </if>
+	        <if test='"operDt" != "" and "operDt" != null'>
+	            chg_dt = #{oper_dt},
+	        </if>
+	    </set>
+	    where id_key = #{idKey}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_logs where id_key = #{idKey}
+	</delete>
+	
+	<insert id="insert" parameterType="SysDept" useGeneratedKeys="true" keyProperty="idKey">		
+		insert into sys_logs
+		(id_key,func_menu_nm, func_oper_nm, oper_id, oper_nm,oper_remark, oper_dt)
+		values
+		(#{idKey},#{funcMenuNm},#{funcOperNm}, #{operId}, #{operNm}, #{operRemark}, #{operDt})
+	</insert>
+	<select id="queryPage" resultMap="sysLogsMap" parameterType="Page">
+		select a.*	from sys_logs a 
+		<where>
+		<if test='params.dataTimeBegin != null and params.dataTimeBegin !="" and params.dataTimeEnd != null and params.dataTimeEnd !=""' >
+        and a.OPER_DT between to_date(#{params.dataTimeBegin},'yyyy-MM-dd hh24:mi:ss') and to_date(#{params.dataTimeEnd},'yyyy-MM-dd hh24:mi:ss')
+        </if>
+        <if test='params.operNm != null and params.operNm !=""' >
+       and a.OPER_NM = #{params.operNm}
+        </if>
+		</where>
+	</select>
+	
+</mapper>

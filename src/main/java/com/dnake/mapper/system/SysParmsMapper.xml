@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.system.SysParmsMapper">
+	<resultMap type="SysParms" id="sysParmsMap">
+		<id column="id_key" property="idKey" />
+		<result column="parm_key" property="parmKey" />
+		<result column="parm_value" property="parmValue" />
+		<result column="chg_dt" property="chgDt" />
+	</resultMap>
+	
+	<select id="queryAll" resultMap="sysParmsMap">
+	  select * from sys_parms
+	</select>
+	
+	<select id="queryByIdKey" resultMap="sysParmsMap" parameterType="java.lang.Long">
+	  select * from sys_parms t where t.id_key = #{idKey}
+	</select>
+
+	<update id="update" parameterType="SysParms">
+		update sys_parms set
+			parm_key = #{parmKey},
+			parm_value = #{parmValue},
+			chg_dt = #{chgDt}
+		where id_key = #{idKey}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_parms where id_key = #{idKey}
+	</delete>
+
+	<insert id="insert" parameterType="SysParms" useGeneratedKeys="true" keyProperty="idKey">
+		insert into sys_parms(id_key, parm_key, parm_value, chg_dt)
+			values(#{idKey}, #{parmKey}, #{parmValue}, #{chgDt})
+	</insert>
+
+</mapper>

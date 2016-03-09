@@ -1,0 +1,2 @@
+<%@ page contentType="text/html; charset=UTF-8"%><%@ page import="java.lang.Exception"%>异常错误信息：
+<%Exception e = (Exception)request.getAttribute("exception");out.println(e.toString().replace("\r", "").replace("\n", "<br>"));%>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizPromotionMapper">
+	<resultMap type="BizPromotion" id="bizPromotionMap">
+		<id column="id_key" property="idKey" />
+		<result column="name" property="name" />
+		<result column="status" property="status" />
+		<result column="start_dt" property="startDt" />
+		<result column="end_dt" property="endDt" />
+		<result column="remarks" property="remarks" />
+		<result column="chg_dt" property="chgDt" />
+		<result column="type" property="type" />
+	</resultMap>
+
+	<resultMap type="BizPromotionVO" id="bizPromotionList">
+		<id column="id_key" property="idKey" />
+		<result column="name" property="name" />
+		<result column="status" property="status" />
+		<result column="start_dt" property="startDt" />
+		<result column="end_dt" property="endDt" />
+		<result column="remarks" property="remarks" />
+		<result column="chg_dt" property="chgDt" />
+        <result column="type" property="type" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizPromotion"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_promotion(
+		id_key,name,status,start_dt,end_dt,remarks,chg_dt,type)
+		values(
+		#{idKey},#{name},#{status},#{startDt},#{endDt},#{remarks},#{chgDt},#{type})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_promotion
+		where id_key=#{idKey}
+	</delete>
+
+	<update id="update" parameterType="BizPromotion">
+		update biz_promotion
+		<set>
+			<if test='name!= null and name!=""'>
+				name=#{name},
+			</if>
+			<if test='status != null '>
+				status=#{status},
+			</if>
+			<if test='startDt!= null and startDt!=""'>
+				start_dt=#{startDt},
+			</if>
+			<if test='endDt!= null and endDt!=""'>
+				end_dt=#{endDt},
+			</if>
+			<if test='remarks!= null and remarks!=""'>
+				remarks=#{remarks},
+			</if>
+			<if test='chgDt!= null and chgDt!=""'>
+				chg_dt=#{chgDt},
+			</if>
+			<if test='type!= null and type!=""'>
+				type=#{type},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+	<select id="queryByIdkey" resultMap="bizPromotionMap"
+		parameterType="java.lang.Long">
+		select * from biz_promotion where id_key=#{idKey}
+	</select>
+
+	<select id="queryPage" resultMap="bizPromotionList"
+		parameterType="Page">
+		select bp.*,bs.name,bs.id_key from biz_promotion bp left join
+		biz_promotion_shop bps on bps.promotion_id=bp.id_key
+		left join biz_shop bs on bs.id_key =bps.shop_id
+		<where>
+			<if test='params.salesId != null and params.salesId != ""'> 
+				and bs.user_id=#{params.salesId} and bp.status !=0
+			</if>
+			<if test='params.shopId != null and params.shopId != ""'> 
+				and bs.id_key=#{params.shopId}
+			</if>
+		</where>
+		order by bp.chg_dt desc
+	</select>
+
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_promotion where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into biz_promotion(
+		name,status,start_dt,end_dt,remarks,chg_dt,type)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.name},#{item.status},#{item.startDt},#{item.endDt},#{item.remarks},#{item.chgDt},#{item.type})
+		</foreach>
+	</insert>
+</mapper>

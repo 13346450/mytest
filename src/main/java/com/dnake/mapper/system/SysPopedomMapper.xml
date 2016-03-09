@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.system.SysPopedomMapper">
+	<resultMap type="SysPopedom" id="sysPopedomMap">
+		<id column="id_key" property="idKey" />
+		<result column="role_id" property="roleId" />
+		<result column="menu_id" property="menuId" />
+		<result column="popedom" property="popedom" />
+		<result column="chg_dt" property="chgDt" />
+	</resultMap>
+	
+	<select id="queryAll" resultMap="sysPopedomMap">
+	  select * from sys_popedom
+	</select>
+	
+	<select id="queryByRoleIdAndMenuId" parameterType="java.lang.Long" resultMap="sysPopedomMap">
+	  select * from sys_popedom t where t.role_id = #{roleId} and t.menu_id = #{menuId}
+	</select>
+
+	<update id="update" parameterType="SysPopedom">
+		update sys_popedom set
+			role_id = #{roleId},
+			menu_id = #{menuId},
+			popedom = #{popedom},
+			chg_dt = #{chgDt}
+		where id_key = #{idKey}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_popedom where id_key = #{idKey}
+	</delete>
+
+	<insert id="insert" parameterType="SysPopedom" useGeneratedKeys="true" keyProperty="idKey">
+		insert into sys_popedom	(id_key, role_id, menu_id, popedom, chg_dt)
+		values(#{idKey}, #{roleId}, #{menuId}, #{popedom}, #{chgDt})
+	</insert>
+	
+	 <!--2013-12-09xzmAdd 根据角色ID查询相应的权限信息-->
+	<select id="queryByRoleId" parameterType="java.lang.Long" resultMap="sysPopedomMap">
+	  select a.MENU_ID,a.POPEDOM from sys_popedom a where a.role_id = #{roleId}
+	</select>
+	
+	 <!--2013-12-09xzmAdd 根据角色ID删除权限信息-->
+	<delete id="delByRoleId" parameterType="java.lang.Long">
+		delete from sys_popedom where role_id=#{roleId}
+	</delete>
+	
+	<!--2013-12-10xzmAdd 根据访问的地址栏与角色ID判断该用户是否有访问权限-->
+	<select id="queryByRoleIdAndUrl" parameterType="java.util.Map" resultMap="sysPopedomMap">
+	  select POPEDOM from sys_popedom inner join sys_menu on 
+	  sys_menu.id_key=sys_popedom.menu_id where link_address=#{linkAddress} and role_id=#{roleId}
+	</select>
+</mapper>

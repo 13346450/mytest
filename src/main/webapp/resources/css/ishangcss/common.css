@@ -1,0 +1,467 @@
+@charset "utf-8";
+/* CSS Document */
+
+html{
+	min-width:1201px;
+}
+body{
+    font-family: "微软雅黑";
+	font-size: 12px;	
+}
+li {
+	list-style:none;
+}
+a {
+	text-decoration:none;
+	color:#000;
+}
+a:focus {
+	outline:none;
+}
+.left {
+	float:left;
+}
+.right {
+	float:right;
+}
+#h1 {
+	background-color:#000;
+	min-height:30px;
+	z-index:1;
+}
+#h2 {
+	padding-top:32px;
+	height:135px;
+	padding: 0;
+	background-color:#FFF;
+	z-index:1;
+}
+.header {
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 163px;
+	padding-top: 0px;
+	overflow: hidden;
+	z-index:99;
+}
+#top-right {
+	width:600px;
+	float:right;
+}
+#top-left1 {
+	padding-right:0;
+	padding-left:0;
+	cursor:pointer;
+}
+#top-left2:hover {
+	height:30px;
+	background-color:#3b3b3b;
+	cursor:pointer;
+}
+#codeshow {
+	background-image:url(../../images/ishangimg/codebg.png);
+	position:absolute;
+	width:165px;
+	height:271px;
+	margin:30px 0 0;
+	z-index:999;
+	display:none;
+}
+#areashow {
+	border:1px solid #CCC;
+	margin-top:30px;
+	background-color:#FFF;
+	color:#000;
+	text-align:left;
+	display:none;
+	height:150px;
+	width:350px;
+	position:absolute;
+	z-index:999;
+}
+.top-font {
+	float:left;
+	margin:5px 4px;
+	color:#FFF;
+}
+.top-fontb {
+	float:right;
+	padding:5px 10px;
+}
+.loginbtn1:hover {
+	color:#F00;
+	cursor:pointer;
+}
+.loginbtn2:hover {
+	color:#F00;
+	cursor:pointer;
+}
+.contentw {
+	color:#FFF;
+}
+#nav a:hover {
+	color:#00a1fe;
+	text-decoration:none;
+	padding-bottom:6px;
+	border-bottom:5px solid #00a0e9;
+	z-index:0;
+	outline:none;
+}
+#nav a.active {
+	color:#00a1fe;
+	text-decoration:none;
+	border-bottom:5px solid #00a0e9;
+	padding-bottom:6px;
+	z-index:0;
+	outline:none;
+}
+.nav ul li {
+	float:left;
+}
+.first {
+	height:80px;
+	margin-top:10px;
+	padding:0;
+}
+.second {
+	height:35px;
+	padding:10px 0;
+}
+.btnsearch {
+	color:#FFF;
+}
+.sfont {
+	padding:20px;
+}
+.navpadding {
+	padding-left:105px;
+}
+.logo {
+	background-image:url(../../images/ishangimg/logo.png);
+	height:70px;
+}
+.logo-after {
+	margin:10px 0 5px;
+}
+.btsearch {
+	width:500px;
+	height:28px;
+	margin-top:5px;
+}
+.search1{
+	padding-right:25px;
+}
+.search-text {
+	height:38px;
+	border:2px solid #00a0e9;
+	margin-left:30px;
+	color:#000;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+}
+.search-btn {
+	height:38px;
+	line-height:38px;
+	background-color:#00a0e9;
+	margin-right:30px;
+	font-size:16px;
+	text-align:center;
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}
+.search-text1 {
+	height:38px;
+	border:2px solid #00a0e9;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+}
+.search-btn1 {
+	height:38px;
+	line-height:38px;
+	background-color:#00a0e9;
+	font-size:16px;
+	text-align:center;
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}
+.cart {
+	/*width:139px;*/
+	height:38px;
+	line-height:38px;
+	background-color:#ffb932;
+	border-radius:5px;
+	padding-right:0;
+	color:#FFF;
+	font-size:14px;
+}
+.ico-cart {
+	width:28px;
+	height:28px;
+	float:left;
+	background-image:url(../../images/ishangimg/cart.png);
+	margin:5px;
+}
+.nav {
+	font-size:18px;
+	color:#000;
+}
+.footer{
+	margin-top:50px;
+	bottom: 0px;
+    left: 0px;
+    width: 100%;
+	position:relative;
+	background-color:#e3e7e9;
+	height:50px;
+	color:#404040;
+    padding-top:20px;
+	text-align:center;
+	font-size:14px;
+}
+i {
+	font-style:normal;
+}
+.ci-right {
+	float:right;
+	height: 16px;
+	width:16px;
+	display:block;
+	background-image:url(../../images/ishangimg/down-list.png);
+	_background-image:url(../../images/ishangimg/down-list.png);
+	background-repeat:no-repeat;
+}
+.icon-man {
+	float:right;
+	width:26px;
+	height:26px;
+	display:block;
+	text-indent:-9999em;
+	overflow:hidden;
+	background-image:url(../../images/ishangimg/ico-man.png);
+	_background-image:url(../../images/ishangimg/ico-man.png);
+	background-repeat:no-repeat;
+}
+.icon-tel {
+	float:left;
+	width:26px;
+	height:26px;
+	display:block;
+	text-indent:-9999em;
+	overflow:hidden;
+	background-image:url(../../images/ishangimg/ico-tel.png);
+	_background-image:url(../../images/ishangimg/ico-tel.png);
+	background-repeat:no-repeat;
+	margin:0 10px 2px;
+}
+.icon-phone {
+	float:left;
+	width:26px;
+	height:26px;
+	display:block;
+	text-indent:-9999em;
+	overflow:hidden;
+	background-image:url(../../images/ishangimg/ico-phone.png);
+	_background-image:url(../../images/ishangimg/ico-phone.png);
+	background-repeat:no-repeat;
+	margin:0 15px 2px;
+}
+/*login.css*/
+input {
+	border:none;
+	padding-left:10px;
+}
+ul {
+	-webkit-padding-start:0;
+}
+.ui-form-item {
+	padding:30px 0 0;
+	zoom:1;
+	position:relative;
+}
+.ui-label {
+	width:38px;
+	height:42px;
+	display:block;
+	float:left;
+	cursor:pointer;
+}
+.ui-label .ui-icon {
+	width:38px;
+	height:42px;
+	display:block;
+	text-indent:-9999em;
+	overflow:hidden;
+	background-color:#ffffff;
+	background-image:url(../../images/ishangimg/ico-login.png);
+	_background-image:url(../../images/ishangimg/ico-login.png);
+	background-repeat:no-repeat;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+	border:1px solid #dadada;
+	border-right-width:0px;
+}
+.ui-icon-userDEF {
+	background-position:-90px 7px;
+}
+.ui-icon-password {
+	background-position:-125px 7px;
+}
+.ui-input {
+	float:left;
+	position:relative;
+	padding:9px;
+	line-height:42px;
+	height:42px;
+	color:#595959;
+	font-size:14px;
+	vertical-align:middle;
+ *vertical-align:-5px;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	box-shadow:none;
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+	border:1px solid #dadada;
+	border-left-width:0px;
+	width:278px;
+}
+.ui-input1 {
+	float:left;
+	position:relative;
+	padding:9px;
+	line-height:42px;
+	height:42px;
+	color:#595959;
+	font-size:14px;
+	vertical-align:middle;
+ *vertical-align:-5px;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	box-shadow:none;
+	border-radius:5px;
+	border:1px solid #dadada;
+	width:315px;
+}
+.ui-input-normal1 {
+	width:200px;
+	border-radius:5px;
+}
+.ui-input-normal1 {
+	width:100px;
+	border-radius:5px;
+}
+.check {
+	float:left;
+}
+.clear {
+	clear:both;
+}
+.loginbtn {
+	width:315px;
+	height:42px;
+	color:#FFF;
+	background-color:#ffbb41;
+	border-radius:5px;
+	font-size:16px;
+}
+.close span {
+	float:right;
+	width:30px;
+	height:20px;
+	background-image:url(../../images/ishangimg/ico-login.png);
+	background-position:-60px;
+}
+.box {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	z-index: 9999;
+	position: fixed;
+	background: rgba(0, 0, 0, 0.35);
+	opacity: 1;
+	display:none;
+}
+.box2 {
+	background-color:#FFF;
+	width:462px;
+	height:420px;
+	margin: 15% auto;
+}
+@media only screen and ( max-width:1900px) {
+	.box2 {
+		zoom: 0.8;
+	}
+}
+.login-ing {
+	width:105px;
+	height:39px;
+	line-height:39px;
+	background-color:#e9e9e9;
+	float:left;
+	font-size:16px;
+	color:#000;
+	text-align:center;
+}
+.login1 {
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+}
+.login2 {
+	border-left:1px #dadada solid;
+	border-right:1px #dadada solid;
+}
+.login3 {
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}
+.lgactive {
+	background-color:#00a0e9;
+	color:#FFF;
+}
+.login1:hover, .login2:hover, .login3:hover {
+	background-color:#00a0e9;
+	color:#FFF;
+}
+#logincont {
+	display:none;
+}
+#logincont2 {
+	display:none;
+	text-align:center;
+}
+#logincont3 {
+	display:none;
+	text-align:center;
+}
+
+#borderbm {
+	border-bottom:1px solid #CCC;
+	margin:10px;
+}
+#borderbm span {
+	font-size:18px;
+	font-weight:bold;
+	color:#00a0e9;
+}
+#register {
+	float: left;
+	position: relative;
+	padding: 1px;
+	opacity: 0.5;
+	z-index: 4;
+	opacity: 1;
+}
+.ui-input-normal1 {
+	width:130px;
+	border-radius:5px;
+}
+.verification {
+	height:42px;
+	line-height:42px;
+	float:right;
+	cursor:pointer;
+	font-size:16px;
+	background-color:#00a0e9;
+	color:#FFF;
+}

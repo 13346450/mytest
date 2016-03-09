@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关于我们</title>
+<link rel="stylesheet"  href="resources/css/ishangcss/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/ishangcss/common.css" >
+<link rel="stylesheet" href="resources/css/ishangcss/normal.css" >
+<script src="resources/javascripts/ishangjs/jquery-1.8.3.min.js"></script>
+<script src="resources/javascripts/ishangjs/bootstrap.min.js"></script>
+<script src="resources/javascripts/ishangjs/header.js"></script>
+<script>
+window.onload = function() {
+	getHeight();
+	topshow();
+}
+</script>
+</head>
+
+<body>
+<!--login-->
+<div id="register">
+  <div class="container box" id="box">
+    <div class="row box2" align="center">
+      <div class="col-xs-2 col-md-offset-9 close"><span title="关闭" style="margin:10px;"></span></div>
+      <div class="col-xs-9 col-md-offset-2" id="logincont">
+        <ul>
+          <li id="lgstyle">
+            <div class="login-ing login1 lgactive">住户</div>
+            <div class="login-ing login2">商家</div>
+            <div class="login-ing login3">物业</div>
+          </li>
+          <li  style="padding-top:45px;">
+            <div class="ui-form-item" >
+              <label class="ui-label"> <span class="ui-icon ui-icon-userDEF">用户名</span> </label>
+              <input type="text" class="ui-input ui-input-normal" maxlength="100"  placeholder="请输入用户名" autofocus>
+            </div>
+          </li>
+          <li  style="padding-top:45px;">
+            <div class="ui-form-item ">
+              <label class="ui-label"> <span class="ui-icon ui-icon-password">密码</span> </label>
+              <input type="password" class="ui-input ui-input-normal" placeholder="请输入密码">
+              <div class="clear"></div>
+            </div>
+          </li>
+          <li style="padding-top:25px; font-size:14px;">
+            <input type="checkbox" class="check">
+            <span class="check">自动登录</span>
+            <div class="right"><a class="loginbtn4" href="#" style=" color:#07b9d9;">忘记密码 |</a> <a class="loginbtn5" href="#" style=" color:#07b9d9;">新用户注册</a></div>
+          </li>
+          <li style="padding-top:35px; font-size:14px;">
+            <input type="button" class="loginbtn" value="登 录">
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-9 col-md-offset-2"  id="logincont2">
+        <ul>
+          <li style="font-size:18px;">注  册 i 尚 社 区 账 号</li>
+           <li id="lgstyle" style="padding-left:55px; height:39px;">
+            <div class="login-ing login1 lgactive">住户</div>
+            <div class="login-ing login3">商家</div>
+          </li>
+          <li  style=" margin-top:-8px;">
+            <div class="ui-form-item" >
+              <input type="text" class="ui-input1 ui-input-normal" maxlength="100"  placeholder="请输入手机号" autofocus>
+            </div>
+          </li>
+          <li  style="padding-top:23px;">
+            <div class="ui-form-item" >
+              <input type="password" class="ui-input1 ui-input-normal" placeholder="请输入密码">
+            </div>
+          </li>
+          <li  style="padding-top:23px;">
+            <div class="ui-form-item" >
+              <input type="password" class="ui-input1 ui-input-normal" placeholder="请再次输入密码">
+            </div>
+          </li>
+          <li  style="padding-top:23px;">
+            <div class="ui-form-item ">
+              <input type="password" class="ui-input1 ui-input-normal1" placeholder="请输入验证码">
+              <label class="verification ui-input-normal1">获取验证码</label>
+              <div class="clear"></div>
+            </div>
+          </li>
+          <li style="padding-top:10px; font-size:14px;">
+            <input type="button" class="loginbtn" value="登 录">
+          </li>
+          <li style="padding-top:5px;font-size:14px;">已有账号？<a href="#"><span class="loginbtn3" style="color:#07b9d9;">点此登录</span></a> </li>
+        </ul>
+      </div>
+      <div class="col-xs-9 col-md-offset-2"  id="logincont3">
+        <ul>
+          <li style="font-size:18px; margin-bottom:15px;">找 回 密 码</li>
+          <li  style=" margin-top:-30px;">
+            <div class="ui-form-item" >
+              <input type="text" class="ui-input1 ui-input-normal" maxlength="100"  placeholder="请输入手机号" autofocus>
+            </div>
+          </li>
+          <li  style="padding-top:32px;">
+            <div class="ui-form-item" >
+              <input type="password" class="ui-input1 ui-input-normal" placeholder="请输入密码">
+            </div>
+          </li>
+          <li  style="padding-top:32px;">
+            <div class="ui-form-item" >
+              <input type="password" class="ui-input1 ui-input-normal" placeholder="请再次输入密码">
+            </div>
+          </li>
+          <li  style="padding-top:32px;">
+            <div class="ui-form-item ">
+              <input type="password" class="ui-input1 ui-input-normal1" placeholder="请输入验证码">
+              <label class="verification ui-input-normal1">获取验证码</label>
+              <div class="clear"></div>
+            </div>
+          </li>
+          <li style="padding-top:18px; font-size:14px;">
+            <input type="button" class="loginbtn" value="确 定">
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-header" id="h1" align="center">
+  <div class="container contentw">
+    <div class="row">
+      <div class="col-xs-2" id="top-left1"> <span class="top-font">金山国际&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="ci-right"></i></span>
+        <div id="areashow">
+          <div id="borderbm" ><span >选择小区</span></div>
+          <ul>
+            <li style="margin:20px;">城市：
+              <select style="margin-left:20px;">
+                <option value ="1">福建省</option>
+                <option value ="2">北京市</option>
+                <option value="3">江西省</option>
+                <option value="4">浙江省</option>
+              </select>
+              <select style="margin-left:20px;">
+                <option value ="1">厦门市</option>
+                <option value ="2">龙岩市</option>
+                <option value="3">三明市</option>
+                <option value="4">漳州市</option>
+              </select>
+              <select style="margin-left:20px;">
+                <option value ="1">湖里区</option>
+                <option value ="2">海沧区</option>
+                <option value="3">集美区</option>
+                <option value="4">思明区</option>
+              </select>
+            </li>
+            <li id="area" style="margin:20px;"> <span>金山社区</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xs-10">
+        <div id="top-right1" class="right"><i class="icon-tel"></i><span class="top-font">客服热线：888888</span></div>
+        <div id="top-center1" class="right"><span class="top-font">&nbsp;&nbsp;<span class="loginbtn2">注册</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span></div>
+        <div id="top-center2" class="right"><span class="top-fontb">您好，请<span class="loginbtn1">登录</span>！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</span><i class="icon-man"></i><span class="top-fontb"></span></div>
+        <div id="top-left2" class="right"> <i class="icon-phone"></i><span class="top-font">手机APP&nbsp;&nbsp;<i class="ci-right"></i></span><span class="top-font">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</span>
+          <div id="codeshow"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="h2" class="container">
+  <div class="row contentw">
+    <div class="col-xs-12 first">
+      <div class="col-xs-2"><img src="resources/images/ishangimg/slogo.png" width="100%" height="100%"></div>
+      <div class="col-xs-10 logo-after">
+        <div class="row search">
+          <input type="text" class="col-xs-8 search-text">
+          <div class="col-xs-1 search-btn"><a href="#"><span class="btnsearch">搜 索</span></a></div>
+        
+      <div class="col-xs-2 cart"> <i class="ico-cart"></i>
+        <p>购物车（<span style="color:#F00;">25</span>）</p>
+      </div></div>
+      </div>
+    </div>
+    <div class="col-xs-12 second">
+      <div class="navbar-collapse collapse nav">
+        <ul id="nav">
+          <li><a href="#">首页</a></li>
+          <li class="navpadding"><a href="#">物业管理</a></li>
+          <li class="navpadding"><a href="#">社区商圈</a></li>
+          <li class="navpadding"><a href="#">智能控制</a></li>
+          <li class="navpadding"><a href="#">产品与解决方案</a></li>
+          <li class="navpadding"><a href="#">新闻动态</a></li>
+          <li class="navpadding"><a href="#" class="active">关于我们</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-2" id="about-lt">
+      <div  class="leftbtn leftbtn-act">关于我们</div>
+      <div class="leftbtn">企业文化</div>
+      <div class="leftbtn">企业荣誉</div>
+      <div class="leftbtn">大事记</div>
+    </div>
+    <div class="col-xs-10" id="about-rt" style="height:1000px;width:975px;">
+      <iframe border="0" id="content" src="about-us.html" frameborder="0" height="100%" width="100%" scrolling="no"></iframe>
+
+    </div>
+  </div>
+</div>
+<div class="footer">厦门狄耐克电子科技有限公司  版权所有</div>
+</body>
+</html>

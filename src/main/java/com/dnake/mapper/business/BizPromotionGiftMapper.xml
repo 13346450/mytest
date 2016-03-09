@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizPromotionGiftMapper">
+	<resultMap type="BizPromotionGift" id="bizPromotionGiftMap">
+		<id column="id_key" property="idKey" />
+		<result column="promotion_id" property="promotionId" />
+		<result column="total" property="total" />
+		<result column="remain" property="remain" />
+		<result column="start_dt" property="startDt" />
+		<result column="end_dt" property="endDt" />
+		<result column="type" property="type" />
+		<result column="value" property="value" />
+		<result column="goods_id" property="goodsId" />
+		<result column="coupon_category" property="couponCategory" />
+		<result column="coupon_min_money" property="couponMinMoney" />
+		<result column="per_max_have" property="perMaxHave" />
+		<result column="one_max_use" property="oneMaxUse" />
+		<result column="use_with_others" property="useWithOthers" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<resultMap type="BizPromotionGiftVO" id="bizPromotionGiftList">
+		<id column="id_key" property="idKey" />
+		<result column="promotion_id" property="promotionId" />
+		<result column="total" property="total" />
+		<result column="remain" property="remain" />
+		<result column="start_dt" property="startDt" />
+		<result column="end_dt" property="endDt" />
+		<result column="type" property="type" />
+		<result column="value" property="value" />
+		<result column="goods_id" property="goodsId" />
+		<result column="coupon_category" property="couponCategory" />
+		<result column="coupon_min_money" property="couponMinMoney" />
+		<result column="per_max_have" property="perMaxHave" />
+		<result column="one_max_use" property="oneMaxUse" />
+		<result column="use_with_others" property="useWithOthers" />
+		<result column="remarks" property="remarks" />
+
+		<result column="shop_name" property="shopName" />
+		<result column="min_sum" property="minSum" />
+		<result column="shop_id" property="shopId" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizPromotionGift"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_promotion_gift(
+		id_key,promotion_id,total,remain,start_dt,end_dt,type,value,goods_id,coupon_category,coupon_min_money,per_max_have,one_max_use,use_with_others,remarks)
+		values(
+		#{idKey},#{promotionId},#{total},#{remain},#{startDt},#{endDt},#{type},#{value},#{goodsId},#{couponCategory},#{couponMinMoney},#{perMaxHave},#{oneMaxUse},#{useWithOthers},#{remarks})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_promotion_gift
+		where id_key=#{idKey}
+	</delete>
+
+	<update id="update" parameterType="BizPromotionGift">
+		update biz_promotion_gift
+		<set>
+			<if test='promotionId!= null and promotionId!=""'>
+				promotion_id=#{promotionId},
+			</if>
+			<if test='total!= null and total!=""'>
+				total=#{total},
+			</if>
+			<if test='startDt!= null and startDt!=""'>
+				start_dt=#{startDt},
+			</if>
+			<if test='endDt!= null and endDt!=""'>
+				end_dt=#{endDt},
+			</if>
+			<if test='type!= null and type!=""'>
+				type=#{type},
+			</if>
+			<if test='value!= null and value!=""'>
+				value=#{value},
+			</if>
+			<if test='goodsId!= null and goodsId!=""'>
+				goods_id=#{goodsId},
+			</if>
+			<if test='couponCategory!= null and couponCategory!=""'>
+				coupon_category=#{couponCategory},
+			</if>
+			<if test='couponMinMoney!= null and couponMinMoney!=""'>
+				coupon_min_money=#{couponMinMoney},
+			</if>
+			<if test='perMaxHave!= null and perMaxHave!=""'>
+				per_max_have=#{perMaxHave},
+			</if>
+			<if test='oneMaxUse!= null and oneMaxUse!=""'>
+				one_max_use=#{oneMaxUse},
+			</if>
+			<if test='useWithOther!= null and useWithOther!=""'>
+				use_with_others=#{useWithOthers},
+			</if>
+			<if test='remarks!= null and remarks!=""'>
+				remarks=#{remarks},
+			</if>
+			<if test='remain!= null and remain!=""'>
+				remain=#{remain},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+
+	<update id="remainMinusOne" parameterType="java.lang.Long">
+		update	biz_promotion_gift set remain=remain-1 where id_key=#{idKey}
+	</update>
+
+	<select id="queryByIdkey" resultMap="bizPromotionGiftMap"
+		parameterType="java.lang.Long">
+		select * from biz_promotion_gift where id_key=#{idKey}
+	</select>
+
+	<select id="queryByPromotionId" resultMap="bizPromotionGiftMap"
+		parameterType="java.lang.Long">
+		select * from biz_promotion_gift where
+		promotion_id=#{promotionId}
+	</select>
+
+	<select id="queryPage" resultMap="bizPromotionGiftList"
+		parameterType="Page">
+		select bs.id_key as shop_Id,bs.name as shop_name,bpr.value as
+		min_sum,bpg.*
+		from biz_promotion_gift bpg
+		left join biz_promotion bp
+		on bpg.promotion_id=bp.id_key
+		left join biz_promotion_shop
+		bps on
+		bps.promotion_id=bpg.promotion_id
+		left join biz_shop bs on
+		bs.id_key=bps.shop_id left join
+		biz_promotion_rule bpr on
+		bpr.promotion_id=bpg.promotion_id
+		<where>
+			bpg.remain !=0
+			<if test='params.communityId != null and params.communityId != ""'>
+				and bs.community_id=#{params.communityId}
+			</if>
+			<if test='params.nowTime != null and params.nowTime != ""'>
+				and bpg.end_dt > #{params.nowTime}
+			</if>
+			<if test='params.idKey != null and params.idKey != ""'>
+				and bpg.id_key=#{params.idKey}
+			</if>
+			<if test='params.status != null and params.status != ""'>
+				and bp.status=#{params.status}
+			</if>
+		</where>
+	</select>
+
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_promotion_gift where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into biz_promotion_gift(
+		promotion_id,total,remain,start_dt,end_dt,type,value,goods_id,coupon_category,coupon_min_money,per_max_have,one_max_use,use_with_others,remarks)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.promotionId},#{item.total},#{item.remain},#{item.startDt},#{item.endDt},#{item.type},#{item.value},#{item.goodsId},#{item.couponCategory},#{item.couponMinMoney},#{item.perMaxHave},#{item.oneMaxUse},#{item.useWithOthers},#{item.remarks})
+		</foreach>
+	</insert>
+	<!-- 查询店铺优惠 -->
+	<select id="mobileQueryShopGift" resultMap="bizPromotionGiftList"
+		parameterType="java.lang.Long">
+		select a.shop_id,c.* from biz_promotion_shop
+		a,biz_promotion_rule b,biz_promotion_gift c where
+		a.promotion_id=b.promotion_id and a.promotion_id=c.promotion_id and
+		a.shop_id=51 and c.type in (2,3)
+	</select>
+</mapper>

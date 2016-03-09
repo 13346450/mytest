@@ -1,0 +1,441 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>物业管理</title>
+<link rel="stylesheet"  href="resources/css/ishangcss/bootstrap.min.css">
+<link rel="stylesheet" href="resources/css/ishangcss/common.css" >
+<link rel="stylesheet" href="resources/css/ishangcss/normal.css" >
+<script src="resources/javascripts/ishangjs/jquery-1.8.3.min.js"></script>
+<script src="resources/javascripts/ishangjs/bootstrap.min.js"></script>
+<script src="resources/javascripts/ishangjs/header.js"></script>
+<script type="text/javascript" src="resources/javascripts/ishangjs/sroll.js"></script>
+<script type="text/javascript" src="resources/javascripts/ishangjs/zyFile.js"></script>
+<script type="text/javascript" src="resources/javascripts/ishangjs/zyUpload.js"></script>
+<script type="text/javascript" src="resources/javascripts/ishangjs/demo.js"></script>
+<script>
+window.onload = function() {
+	topshow();
+}
+</script>
+
+</head>
+
+<body>
+<!--login-->
+<div id="register">
+  <div class="container box" id="box">
+    <div class="row box2" align="center">
+      <div class="col-xs-2 col-md-offset-9 close"><span title="关闭" style="margin:10px;"></span></div>
+      <div class="col-xs-9 col-md-offset-2" id="logincont">
+        <ul>
+          <li id="lgstyle">
+            <div class="login-ing login1 lgactive">住户</div>
+            <div class="login-ing login2">商家</div>
+            <div class="login-ing login3">物业</div>
+          </li>
+          <li  style="padding-top:45px;">
+            <div class="ui-form-item" >
+              <label class="ui-label"> <span class="ui-icon ui-icon-userDEF">用户名</span> </label>
+              <input type="text" class="ui-input ui-input-normal" maxlength="100"  placeholder="请输入用户名" autofocus>
+            </div>
+          </li>
+          <li  style="padding-top:45px;">
+            <div class="ui-form-item ">
+              <label class="ui-label"> <span class="ui-icon ui-icon-password">密码</span> </label>
+              <input type="password" class="ui-input ui-input-normal" placeholder="请输入密码">
+              <div class="clear"></div>
+            </div>
+          </li>
+          <li style="padding-top:25px; font-size:14px;">
+            <input type="checkbox" class="check">
+            <span class="check">自动登录</span>
+            <div class="right"><a class="loginbtn4" href="#" style=" color:#07b9d9;">忘记密码 |</a> <a class="loginbtn5" href="#" style=" color:#07b9d9;">新用户注册</a></div>
+          </li>
+          <li style="padding-top:45px; font-size:14px;">
+            <input type="button" class="loginbtn" value="登 录">
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-9 col-md-offset-2"  id="logincont2">
+        <ul>
+          <li style="font-size:18px;">注  册 i 尚 社 区 账 号</li>
+          <li id="lgstyle" style="padding-left:55px; height:39px;">
+            <div class="login-ing login1 lgactive">住户</div>
+            <div class="login-ing login3">商家</div>
+          </li>
+          <li  style=" margin-top:-8px;">
+            <div class="ui-form-item" >
+              <input type="text" class="ui-input1 ui-input-normal" maxlength="100"  placeholder="请输入手机号" autofocus>
+            </div>
+          </li>
+          <li  style="padding-top:23px;">
+            <div class="ui-form-item" >
+              <input type="password" class="ui-input1 ui-input-normal" placeholder="请输入密码">
+            </div>
+          </li>
+          <li  style="padding-top:23px;">
+            <div class="ui-form-item" >
+              <input type="password" class="ui-input1 ui-input-normal" placeholder="请再次输入密码">
+            </div>
+          </li>
+          <li  style="padding-top:23px;">
+            <div class="ui-form-item ">
+              <input type="password" class="ui-input1 ui-input-normal1" placeholder="请输入验证码">
+              <label class="verification ui-input-normal1">获取验证码</label>
+              <div class="clear"></div>
+            </div>
+          </li>
+          <li style="padding-top:10px; font-size:14px;">
+            <input type="button" class="loginbtn" value="登 录">
+          </li>
+          <li style="padding-top:5px;font-size:14px;">已有账号？<a href="#"><span class="loginbtn3" style="color:#07b9d9;">点此登录</span></a> </li>
+        </ul>
+      </div>
+      <div class="col-xs-9 col-md-offset-2"  id="logincont3">
+        <ul>
+          <li style="font-size:18px; margin-bottom:15px;">找 回 密 码</li>
+          <li  style=" margin-top:-30px;">
+            <div class="ui-form-item" >
+              <input type="text" class="ui-input1 ui-input-normal" maxlength="100"  placeholder="请输入手机号" autofocus>
+            </div>
+          </li>
+          <li  style="padding-top:32px;">
+            <div class="ui-form-item" >
+              <input type="password" class="ui-input1 ui-input-normal" placeholder="请输入密码">
+            </div>
+          </li>
+          <li  style="padding-top:32px;">
+            <div class="ui-form-item" >
+              <input type="password" class="ui-input1 ui-input-normal" placeholder="请再次输入密码">
+            </div>
+          </li>
+          <li  style="padding-top:32px;">
+            <div class="ui-form-item ">
+              <input type="password" class="ui-input1 ui-input-normal1" placeholder="请输入验证码">
+              <label class="verification ui-input-normal1">获取验证码</label>
+              <div class="clear"></div>
+            </div>
+          </li>
+          <li style="padding-top:18px; font-size:14px;">
+            <input type="button" class="loginbtn" value="确 定">
+          </li>
+        </ul>
+      </div>
+      <div class="clear"></div>
+      <!--manage-btn-->
+      <div class="col-xs-12" id="logincont-manage" style="padding:0; text-align:center; width:462px;height:420px;">
+        <ul>
+  <li id="lgstyle-manage" style="height:50px; line-height:50px; background-color:#e4f0f6; font-size:14px;">
+    <div class="">您当前报修的小区：<span style="color:#00a0e9;">金山小区</span></div>
+  </li>
+  <li  style="padding-top:10px;">
+    <select style="width:386px; height:40px; border-radius:5px;padding-left:10px;">
+      <option value ="1">请选择报修类型</option>
+      <option value ="2">水电</option>
+      <option value="3">木工</option>
+    </select>
+  </li>
+  <li  style="padding-top:10px;">
+    <input type="text" class="" placeholder="报修标题" style=" border:1px solid #b8b8b8; width:386px; height:40px; border-radius:5px; padding-left:15px;">
+  </li>
+  <li style="padding-top:10px; font-size:14px;">
+    <textarea id="txt"  name="replyContent" cols="50%" rows="4%" placeholder="请描述需要报修的状况" style="border-radius:5px;padding-left:15px;"></textarea>
+  </li>
+  <li style="padding-top:15px; font-size:14px;">
+    <div id="demo" class="demo">
+      <form id="uploadForm" action="UploadAction" method="post" enctype="multipart/form-data">
+        <div class="upload_box">
+          <div class="upload_main">
+            <div class="upload_choose">
+              <div class="convent_choice" style="float:left;">
+                <div class="andArea">
+                  <div class="filePicker"></div>
+                  <input id="fileImage" type="file" size="30" name="fileselect[]" multiple="" style="display:none;">
+                </div>
+              </div>
+              <div style="float:left;"><div id="preview" class="upload_preview"></div></div>
+              <span id="fileDragArea" class="upload_drag_area">
+              <div id="status_info" class="info">0/5</div>
+              </span> </div>
+            <div class="status_bar"> </div>
+            <!--<div id="preview" class="upload_preview"></div>-->
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--manage-btn-->
+    <div class="clear"></div>
+  </li>
+   <li style="padding-top:10px;"><div class="left mg-btnbg1" ><a href="javascript:void(0)" style="color:#FFF;" onclick="">确 认</a></div> 
+  <div id="manage-reset" class="left mg-btnbg2"><a href="javascript:void(0)" style="color:#FFF;" onclick="">取 消</a></div></li>
+       </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="main-header" id="h1" align="center">
+  <div class="container contentw">
+    <div class="row">
+      <div class="col-xs-2" id="top-left1"> <span class="top-font">金山国际&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="ci-right"></i></span>
+        <div id="areashow">
+          <div id="borderbm" ><span >选择小区</span></div>
+          <ul>
+            <li style="margin:20px;">城市：
+              <select style="margin-left:20px;">
+                <option value ="1">福建省</option>
+                <option value ="2">北京市</option>
+                <option value="3">江西省</option>
+                <option value="4">浙江省</option>
+              </select>
+              <select style="margin-left:20px;">
+                <option value ="1">厦门市</option>
+                <option value ="2">龙岩市</option>
+                <option value="3">三明市</option>
+                <option value="4">漳州市</option>
+              </select>
+              <select style="margin-left:20px;">
+                <option value ="1">湖里区</option>
+                <option value ="2">海沧区</option>
+                <option value="3">集美区</option>
+                <option value="4">思明区</option>
+              </select>
+            </li>
+            <li id="area" style="margin:20px;"> <span>金山社区</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xs-10">
+        <div id="top-right1" class="right"><i class="icon-tel"></i><span class="top-font">客服热线：888888</span></div>
+        <div id="top-center1" class="right"><span class="top-font">&nbsp;&nbsp;<span class="loginbtn2">注册</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span></div>
+        <div id="top-center2" class="right"><span class="top-fontb">您好，请<span class="loginbtn1">登录</span>！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</span><i class="icon-man"></i><span class="top-fontb"></span></div>
+        <div id="top-left2" class="right"><a href="APPdown.html"> <i class="icon-phone"></i><span class="top-font">手机APP&nbsp;&nbsp;<i class="ci-right"></i></span></a><span class="top-font">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</span>
+          <div id="codeshow"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="h2" class="container">
+  <div class="row contentw">
+    <div class="col-xs-12 first">
+      <div class="col-xs-2"><img src="resources/images/ishangimg/slogo.png" width="100%" height="100%"></div>
+      <div class="col-xs-10 logo-after">
+        <div class="row search">
+          <input type="text" class="col-xs-8 search-text">
+          <div class="col-xs-1 search-btn"><a href="#"><span class="btnsearch">搜 索</span></a></div>
+          <div class="col-xs-2 cart"><a href="cart01.html"> <i class="ico-cart"></i>
+            <p style="color:#FFF;">购物车（<span style="color:#F00;">25</span>）</p></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 second">
+      <div class="navbar-collapse collapse nav">
+        <ul id="nav">
+          <li><a href="#">首页</a></li>
+          <li class="navpadding"><a href="#" class="active">物业管理</a></li>
+          <li class="navpadding"><a href="#">社区商圈</a></li>
+          <li class="navpadding"><a href="#">智能控制</a></li>
+          <li class="navpadding"><a href="#">产品与解决方案</a></li>
+          <li class="navpadding"><a href="#">新闻动态</a></li>
+          <li class="navpadding"><a href="#">关于我们</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!--login end-->
+<div class="container">
+  <div class="row">
+    <div class="left manage-lt" id="manage-lt1">
+      <p style="font-size:45px;">物业管理</p>
+      <h3>一键缴费</h3>
+    </div>
+    <div class="left" id="manage-rt">
+      <div class="manage-tb1">
+        <div class="left wd150"><span><b>缴费项目</b></span></div>
+        <div class="left wd350"><span><b>金额</b></span></div>
+        <div class="left wd167"><span><b>时间</b></span></div>
+      </div>
+      <div class="manage-tb2">
+        <div class="left wd150"><span>物业服务费</span></div>
+        <div class="left wd350"><span>1200</span></div>
+        <div class="left wd167"><span>2014.6-2015.5</span></div>
+      </div>
+      <div class="manage-tb2">
+        <div class="left wd150"><span>房屋公共维修金</span></div>
+        <div class="left wd350"><span>1200</span></div>
+        <div class="left wd167"><span>2014.6-2015.5</span></div>
+      </div>
+      <div class="manage-tb3">
+        <div class="right wd150"><span><b>总计：&yen;2400.00</b></span></div>
+      </div>
+      <div class="manage-search">
+        <select id="sel" style="float:left; height:38px; width:100px;border-radius:5px; margin-left:15px; border:2px solid #ffc75b; font-size:18px; ">
+          <option value="manage-pay">物业费</option>
+          <option value="car-pay">停车费</option>
+        </select>
+        <input type="text" class="left manage-text" placeholder="请输入查询号码">
+        <div class="left manage-searchbtn"><a href="#"><span class="btnsearch">查 询</span></a></div>
+        <input type="button" value="缴 费" class="left pay-btn">
+      </div>
+    </div>
+    <div class="left manage-news"> <span class="manage-newstop">通知公告</span>
+      <hr style="margin-top:-1px;">
+      <h6 class="margin20-10"><a href="#">【公告】关于2015年缴纳物业管理费用…</a></h6>
+      <h6 class="margin20-10"><a href="#">【公告】关于2015年缴纳物业管理费用…</a></h6>
+      <h6 class="margin20-10"><a href="#">【公告】关于2015年缴纳物业管理费用…</a></h6>
+      <h6 class="margin20-10"><a href="#">【公告】关于2015年缴纳物业管理费用…</a></h6>
+      <h6 class="margin20-10"><a href="#">【公告】关于2015年缴纳物业管理费用…</a></h6>
+      <h6 class="margin20-10"><a href="#">【公告】关于2015年缴纳物业管理费用…</a></h6>
+      <h6 class="margin20-10"><a href="#">【公告】关于2015年缴纳物业管理费用…</a></h6>
+      <h6 class="margin20-10"><a href="#">【公告】关于2015年缴纳物业管理费用…</a></h6>
+      <a href="#" class="right more-color margin10-30"> >更多</a> </div>
+    <div class="left manage-lt" id="manage-lt2">
+      <p style="font-size:45px;">物业报修</p>
+      <h3>实时处理</h3>
+      <input id="repairs" type="button" style="" value="我要报修">
+    </div>
+    <div class="left Div1" id="manage-rt">
+      <div class="manage23">
+        <div class="manage2-tb onmanage2-tb">全部</div>
+        <div class="manage2-tb">我的</div>
+      </div>
+      <div class="Div1_manage">
+        <div class="Div1_manage_span1 repairs-news"> <span class="left">Miss 李</span><span class="right color-ff5b00"><b>待处理</b></span><br/>
+          <h5>电脑系统内存坏了……</h5>
+          <div style="width:140px;height:136px;"> <img src="resources/images/ishangimg/problem.jpg" width="100%" height="100%"> </div>
+          <h5>2015-06-18  10:32:00</h5>
+        </div>
+        <div class="repairs-news"> <span class="left">Miss 李</span><span class="right color-ff5b00"><b>待处理</b></span><br/>
+          <h5>电脑系统内存坏了……</h5>
+          <div style="width:140px;height:136px;"> <img src="resources/images/ishangimg/problem.jpg" width="100%" height="100%"> </div>
+          <h5>2015-06-18  10:32:00</h5>
+        </div>
+        <div class="repairs-news"> <span class="left">Miss 李</span><span class="right color-ff5b00"><b>待处理</b></span><br/>
+          <h5>电脑系统内存坏了……</h5>
+          <div style="width:140px;height:136px;"> <img src="resources/images/ishangimg/problem.jpg" width="100%" height="100%"> </div>
+          <h5>2015-06-18  10:32:00</h5>
+        </div>
+        <div class="repairs-news"> <span class="left">Miss 李</span><span class="right color-ff5b00"><b>待处理</b></span><br/>
+          <h5>电脑系统内存坏了……</h5>
+          <div style="width:140px;height:136px;"> <img src="resources/images/ishangimg/problem.jpg" width="100%" height="100%"> </div>
+          <h5>2015-06-18  10:32:00</h5>
+        </div>
+        <div class="repairs-news"> <span class="left">Miss 李</span><span class="right color-ff5b00"><b>待处理</b></span><br/>
+          <h5>电脑系统内存坏了……</h5>
+          <div style="width:140px;height:136px;"> <img src="resources/images/ishangimg/problem.jpg" width="100%" height="100%"> </div>
+          <h5>2015-06-18  10:32:00</h5>
+        </div>
+        <div class="repairs-news"> <span class="left">Miss 李</span><span class="right color-ff5b00"><b>待处理</b></span><br/>
+          <h5>电脑系统内存坏了……</h5>
+          <div style="width:140px;height:136px;"> <img src="resources/images/ishangimg/problem.jpg" width="100%" height="100%"> </div>
+          <h5>2015-06-18  10:32:00</h5>
+        </div>
+        <div class="repairs-news"> <span class="left">Miss 李</span><span class="right color-ff5b00"><b>待处理</b></span><br/>
+          <h5>电脑系统内存坏了……</h5>
+          <div style="width:140px;height:136px;"> <img src="resources/images/ishangimg/problem.jpg" width="100%" height="100%"> </div>
+          <h5>2015-06-18  10:32:00</h5>
+        </div>
+      </div>
+      <div class="margintop13"><a  class="manage-ico Div1_prev01 Div1_prev1" href="javascript:void(0)"></a></div>
+      <div class="marginright"><a class="manage-ico manage-icor Div1_next01 Div1_next1" href="javascript:void(0)"></a></div>
+      <div style="position:absolute; bottom:0; width:916px;"><a href="#" class="right more-color margin10-30">>更多</a></div>
+    </div>
+    <div class="clear"></div>
+    <div class="left manage-lt" id="manage-lt3">
+      <p style="font-size:45px;">家政服务</p>
+      <h3>方便快捷</h3>
+    </div>
+    <div class="left Div1" id="manage-rt">
+      <div class="manage23">
+        <div class="manage3-tb onmanage3-tb">房屋维修</div>
+        <div class="manage3-tb">家电维修</div>
+        <div class="manage3-tb">送水服务</div>
+        <div class="manage3-tb">家庭清洁</div>
+        <div class="manage3-tb">老幼护理</div>
+        <div class="manage3-tb">家政服务</div>
+        <div class="manage3-tb">家教服务</div>
+      </div>
+      <div class="Div1_home">
+        <div class="left home-news Div1_home_span1">
+          <div class="home-newspic"> <span class="home-company">厦门狄耐克电子科技有限公司</span> </div>
+          <p style="margin:5px 0 0 15px;">介绍:</p>
+          <i class="manage-ico manage-icotel" ></i><span class="manage-tel">0592-1234567</span>
+          <div class="clear"></div>
+          <i class="manage-ico manage-icoadd"></i><span class="manage-address">厦门市湖里区火炬园创新路2号</span> </div>
+        <div class="left home-news">
+          <div class="home-newspic"> <span class="home-company">厦门狄耐克电子科技有限公司</span> </div>
+          <p style="margin:5px 0 0 15px;">介绍:</p>
+          <i class="manage-ico manage-icotel" ></i><span class="manage-tel">0592-1234567</span>
+          <div class="clear"></div>
+          <i class="manage-ico manage-icoadd"></i><span class="manage-address">厦门市湖里区火炬园创新路2号</span> </div>
+        <div class="left home-news">
+          <div class="home-newspic"> <span class="home-company">厦门狄耐克电子科技有限公司</span> </div>
+          <p style="margin:5px 0 0 15px;">介绍:</p>
+          <i class="manage-ico manage-icotel" ></i><span class="manage-tel">0592-1234567</span>
+          <div class="clear"></div>
+          <i class="manage-ico manage-icoadd"></i><span class="manage-address">厦门市湖里区火炬园创新路2号</span> </div>
+        <div class="left home-news">
+          <div class="home-newspic"> <span class="home-company">厦门狄耐克电子科技有限公司</span> </div>
+          <p style="margin:5px 0 0 15px;">介绍:</p>
+          <i class="manage-ico manage-icotel" ></i><span class="manage-tel">0592-1234567</span>
+          <div class="clear"></div>
+          <i class="manage-ico manage-icoadd"></i><span class="manage-address">厦门市湖里区火炬园创新路2号</span> </div>
+        <div class="left home-news">
+          <div class="home-newspic"> <span class="home-company">厦门狄耐克电子科技有限公司</span> </div>
+          <p style="margin:5px 0 0 15px;">介绍:</p>
+          <i class="manage-ico manage-icotel" ></i><span class="manage-tel">0592-1234567</span>
+          <div class="clear"></div>
+          <i class="manage-ico manage-icoadd"></i><span class="manage-address">厦门市湖里区火炬园创新路2号</span> </div>
+        <div class="left home-news">
+          <div class="home-newspic"> <span class="home-company">厦门狄耐克电子科技有限公司</span> </div>
+          <p style="margin:5px 0 0 15px;">介绍:</p>
+          <i class="manage-ico manage-icotel" ></i><span class="manage-tel">0592-1234567</span>
+          <div class="clear"></div>
+          <i class="manage-ico manage-icoadd"></i><span class="manage-address">厦门市湖里区火炬园创新路2号</span> </div>
+        <div class="left home-news">
+          <div class="home-newspic"> <span class="home-company">厦门狄耐克电子科技有限公司</span> </div>
+          <p style="margin:5px 0 0 15px;">介绍:</p>
+          <i class="manage-ico manage-icotel" ></i><span class="manage-tel">0592-1234567</span>
+          <div class="clear"></div>
+          <i class="manage-ico manage-icoadd"></i><span class="manage-address">厦门市湖里区火炬园创新路2号</span> </div>
+        <div class="left home-news">
+          <div class="home-newspic"> <span class="home-company">厦门狄耐克电子科技有限公司</span> </div>
+          <p style="margin:5px 0 0 15px;">介绍:</p>
+          <i class="manage-ico manage-icotel" ></i><span class="manage-tel">0592-1234567</span>
+          <div class="clear"></div>
+          <i class="manage-ico manage-icoadd"></i><span class="manage-address">厦门市湖里区火炬园创新路2号</span> </div>
+      </div>
+      <div class="margintop13"><a  class="manage-ico Div1_prev02 Div1_prev1" href="javascript:void(0)"></a></div>
+      <div class="marginright"><a class="manage-ico manage-icor Div1_next02 Div1_next1" href="javascript:void(0)"></a></div>
+      <div style="position:absolute;bottom:0; width:916px;"><a href="#" class="right more-color margin10-30">>更多</a></div>
+    </div>
+    <div class="clear"></div>
+    <div class="left manage-lt" id="manage-lt4">
+      <p style="font-size:45px;">物业客服</p>
+      <h3>随时随地</h3>
+    </div>
+    <div class="left" id="manage-rt"> <img src="resources/images/ishangimg/service-rt.jpg" width="606" height="382" style="float:left;">
+      <div class="servicetb">
+        <div class="service-tel"><span class="left">保安室电话：0592110</span><i class="manage-ico service-telico"></i></div>
+        <div  class="service-tel">
+          <p class="left">办公室电话：0592110</p>
+          <i class="manage-ico service-telico"></i></div>
+        <div  class="service-tel">
+          <p class="left">物业电话：05929638525</p>
+          <i class="manage-ico service-telico"></i></div>
+        <div class="service-name">
+          <p>小区名称：万科湖心</p>
+          <p>服务物业：XX物业</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="footer">厦门狄耐克电子科技有限公司 版权所有</div>
+</body>
+</html>

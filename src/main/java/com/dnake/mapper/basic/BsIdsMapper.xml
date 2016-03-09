@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.basic.BsIdsMapper" >
+	<resultMap  type="BsIds" id="BsIds">
+		<id column="idKey" property="idKey" />
+		<result column="nameType" property="nameType" />
+		<result column="iId" property="iId" />
+		<result column="type" property="type" />
+		<result column="oId" property="oId" />
+	</resultMap>
+	<insert id="insert" parameterType="BsIds" useGeneratedKeys="true" keyProperty="idKey">
+		insert into bs_ids(
+			idKey,nameType,iId,type,oId
+		)
+		values(
+			#{idKey},#{nameType},#{iId},#{type},#{oId}
+		)
+	</insert>
+	<select id="getById" resultMap="BsIds">
+		select * from bs_ids where idKey=#{0}
+	</select>
+	<select id="getByNameTypeAndTypeAndIId"  resultMap="BsIds">
+		select * from bs_ids where nameType=#{0} and type=#{1} and iId=#{2}
+	</select>
+	<select id="getByNameTypeAndTypeAndOId" resultMap="BsIds">
+		select * from bs_ids where nameType=#{0} and type=#{1} and oId=#{2}
+	</select>
+</mapper>

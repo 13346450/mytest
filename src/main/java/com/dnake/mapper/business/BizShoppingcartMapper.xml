@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizShoppingcartMapper">
+	<resultMap type="BizShoppingcart" id="BizShoppingcartMap">
+		<id column="id_key" property="idKey" />
+		<result column="user_id" property="userId" />
+		<result column="goods_id" property="goodsId" />
+		<result column="goods_count" property="goodsCount" />
+		<result column="shop_id" property="shopId" />
+	</resultMap>
+
+	<resultMap type="BizShoppingcartVO" id="BizShoppingcartList">
+		<id column="id_key" property="idKey" />
+		<result column="user_id" property="userId" />
+		<result column="goods_id" property="goodsId" />
+		<result column="goods_count" property="goodsCount" />
+		<result column="shop_id" property="shopId" />
+		
+		<result column="shop_name" property="shopName" />
+		<result column="goods_name" property="goodsName" />
+		<result column="simage_url" property="simageUrl" />
+		<result column="unit_price" property="unitPrice" />
+		<result column="discount_price" property="discountPrice" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizShoppingcart"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_shoppingcart(
+		id_key,user_id,goods_id,goods_count,shop_id)
+		values(
+		#{idKey},#{userId},#{goodsId},#{goodsCount},#{shopId})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_shoppingcart where id_key=#{idKey}
+	</delete>
+
+	<update id="update" parameterType="BizShoppingcart">
+		update biz_shoppingcart
+		<set>
+			<if test='userId!= null and userId!=""'>
+				user_id=#{userId},
+			</if>
+			<if test='goodsId!= null and goodsId!=""'>
+				goods_id=#{goodsId},
+			</if>
+			<if test='goodsCount!= null and goodsCount!=""'>
+				goods_count=#{goodsCount},
+			</if>
+			<if test='shopId!= null and shopId!=""'>
+				shop_id=#{shopId},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+	<select id="queryByIdkey" resultMap="BizShoppingcartMap"
+		parameterType="java.lang.Long">
+		select * from biz_shoppingcart where id_key=#{idKey}
+	</select>
+
+	<select id="queryPage" resultMap="BizShoppingcartList"
+		parameterType="Page">
+		null
+		<!--<where> chg_dt between #{params.startDatetime} and #{params.endDatetime} 
+			<if test='params.name != null and params.name != ""'> and br.name=#{params.name} 
+			</if> </where> -->
+	</select>
+
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_shoppingcart where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into biz_shoppingcart(
+		user_id,goods_id,goods_count,shop_id)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.userId},#{item.goodsId},#{item.goodsCount},#{item.shopId})
+		</foreach>
+	</insert>
+	
+	<insert id="mobileInsertGoodsShoopingCart" parameterType="BizShoppingcart"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_shoppingcart(
+		id_key,user_id,goods_id,goods_count,shop_id)
+		values(
+		#{idKey},#{userId},#{goodsId},#{goodsCount},#{shopId})
+	</insert>
+	
+	<select id="mobileQueryList" resultMap="BizShoppingcartList" parameterType="Page">
+		select a.*, b.goods_name as goods_name, b.simages as simage_url, b.discount_price as discount_price, b.unit_price as unit_price, c.name as shop_name 
+		from biz_shoppingcart a 
+		left join biz_goods b on a.goods_id = b.id_key
+		left join biz_shop  c on  a.shop_id = c.id_key
+		<where>
+			a.user_id = #{userId}
+		</where>
+	</select>
+	
+	<select id="mobileQueryByUserIdAndOtherId" resultMap="BizShoppingcartList" parameterType="BizShoppingcart">
+		select a.* from biz_shoppingcart a 
+		<where>
+			<if test='userId!= null and userId!=""'>
+				a.user_id = #{userId}
+			</if>
+			<if test='shopId!= null and shopId!=""'>
+				and a.shop_id = #{shopId}
+			</if>
+			<if test='goodsId!= null and goodsId!=""'>
+				 and a.goods_id = #{goodsId}
+			</if>
+		</where>
+	</select>
+	
+</mapper>

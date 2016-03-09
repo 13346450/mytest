@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.system.SysCommunityMapper">
+	<resultMap type="SysCommunity" id="sysCommunityMap">
+		<id column="ID_KEY" property="idKey" />
+		<result column="cu_name" property="communityName" jdbcType="VARCHAR" />
+		<result column="order_cd" property="orderCd" jdbcType="DECIMAL" />
+		<result column="dept_id" property="deptId" jdbcType="DECIMAL" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="pro_user_id" property="proUserId" jdbcType="DECIMAL" />
+		<result column="pro_name" property="proName" jdbcType="VARCHAR" />
+		<result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+		<result column="telephone" property="telephone" jdbcType="VARCHAR" />
+		<result column="use_mark" property="useMark" jdbcType="DECIMAL" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+
+		<result column="name" property="name" />
+		<result column="leader" property="leader" />
+		<result column="leader_phone" property="leaderPhone" />
+		<result column="summary" property="summary" />
+		<result column="security_room_phone" property="securityRoomPhone" />
+		<result column="office_phone" property="officePhone" />
+		<result column="community_code" property="communityCode" />
+		<result column="community_no" property="communityNo" />
+		<result column="operate_time" property="operateTime" />
+		<result column="community_name" property="communityName" />
+		<result column="last_updated" property="lastUpdated" />
+		<result column="logo_url" property="logoUrl" />
+
+	</resultMap>
+
+	<resultMap type="SysCommunityVO" id="sysCommunityVOMap">
+		<id column="ID_KEY" property="idKey" />
+		<result column="cu_name" property="communityName" jdbcType="VARCHAR" />
+		<result column="order_cd" property="orderCd" jdbcType="DECIMAL" />
+		<result column="dept_id" property="deptId" jdbcType="DECIMAL" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="pro_user_id" property="proUserId" jdbcType="DECIMAL" />
+		<result column="pro_name" property="proName" jdbcType="VARCHAR" />
+		<result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+		<result column="telephone" property="telephone" jdbcType="VARCHAR" />
+		<result column="use_mark" property="useMark" jdbcType="DECIMAL" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+
+		<result column="name" property="name" />
+		<result column="leader" property="leader" />
+		<result column="leader_phone" property="leaderPhone" />
+		<result column="summary" property="summary" />
+		<result column="security_room_phone" property="securityRoomPhone" />
+		<result column="office_phone" property="officePhone" />
+		<result column="community_code" property="communityCode" />
+		<result column="community_no" property="communityNo" />
+		<result column="operate_time" property="operateTime" />
+		<result column="community_name" property="communityName" />
+		<result column="last_updated" property="lastUpdated" />
+		<result column="logo_url" property="logoUrl" />
+
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="district" property="district" jdbcType="VARCHAR" />
+
+		<result column="community_info" property="communityInfo" />
+		<result column="community_info_id" property="communityInfoId" />
+		<result column="proper_info" property="properInfo" />
+		<result column="proper_info_id" property="properInfoId" />
+	</resultMap>
+
+
+	<select id="queryAll" resultMap="sysCommunityMap">
+		select * from sys_community
+		order by order_cd
+	</select>
+
+	<select id="queryPage" resultMap="sysCommunityMap"
+		parameterType="Page">
+		select * from sys_community where dept_id=#{params.deptID} and
+		id_key in
+		<foreach item="item" index="index" collection="params.communityIds"
+			open="(" separator="," close=")"> #{params.communityIds[${index}]}
+		</foreach>
+		order by order_cd
+	</select>
+
+	<select id="queryById" parameterType="java.lang.Long" resultMap="sysCommunityMap">
+		select * from sys_community t where t.id_key = #{userId}
+	</select>
+	
+
+	<insert id="insert" parameterType="SysCommunity"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into sys_community (id_key,
+		cu_name,order_cd, dept_id, address, pro_user_id,pro_name,
+		cellphone,
+		telephone, use_mark, remark,city_id,province_id)
+		values (#{idKey},
+		#{communityName}, #{orderCd},#{deptId}, #{address},
+		#{proUserId},
+		#{proName},#{cellphone},
+		#{telephone}, #{useMark},
+		#{remark},#{cityId},#{provinceId})
+	</insert>
+	<delete id="delete" parameterType="java.lang.Long">
+		delete a.*,b.*,c.*,d.* from
+		sys_community a
+		left join biz_category b on a.id_key=b.community_id
+		left join biz_chain c on a.id_key= c.community_id
+		left join sys_user d on
+		a.id_key=d.dept_id
+		where a.id_key = #{communityId}
+	</delete>
+
+	<update id="update" parameterType="SysCommunity">
+		update sys_community
+		<set>
+			<if test='communityName!= null and communityName!=""'>
+				cu_name=#{communityName},
+			</if>
+			<if test='orderCd!= null and orderCd!=""'>
+				order_cd=#{orderCd},
+			</if>
+			<if test='deptId!= null and deptId!=""'>
+				dept_id=#{deptId},
+			</if>
+			<if test='address!= null and address!=""'>
+				address=#{address},
+			</if>
+			<if test='proUserId!= null and proUserId!=""'>
+				pro_user_id=#{proUserId},
+			</if>
+			<if test='proName!= null and proName!=""'>
+				pro_name=#{proName},
+			</if>
+			<if test='cellphone!= null and cellphone!=""'>
+				cellphone=#{cellphone},
+			</if>
+			<if test='telephone!= null and telephone!=""'>
+				telephone=#{telephone},
+			</if>
+			<if test='useMark!= null and useMark!=""'>
+				use_mark=#{useMark},
+			</if>
+			<if test='remark!= null and remark!=""'>
+				remark=#{remark},
+			</if>
+			<if test='provinceId!= null and provinceId!=""'>
+				province_id=#{provinceId},
+			</if>
+			<if test='cityId!= null and cityId!=""'>
+				city_id=#{cityId},
+			</if>
+			<if test='name!= null and name!=""'>
+				name=#{name},
+			</if>
+			<if test='leader!= null and leader!=""'>
+				leader=#{leader},
+			</if>
+			<if test='leaderPhone!= null and leaderPhone!=""'>
+				leader_phone=#{leaderPhone},
+			</if>
+			<if test='summary!= null and summary!=""'>
+				summary=#{summary},
+			</if>
+			<if test='securityRoomPhone!= null and securityRoomPhone!=""'>
+				security_room_phone=#{securityRoomPhone},
+			</if>
+			<if test='officePhone!= null and officePhone!=""'>
+				office_phone=#{officePhone},
+			</if>
+			<if test='communityCode!= null and communityCode!=""'>
+				community_code=#{communityCode},
+			</if>
+			<if test='communityNo!= null and communityNo!=""'>
+				community_no=#{communityNo},
+			</if>
+			<if test='operateTime!= null and operateTime!=""'>
+				operate_time=#{operateTime},
+			</if>
+			<if test='communityName!= null and communityName!=""'>
+				community_name=#{communityName},
+			</if>
+			<if test='lastUpdated!= null and lastUpdated!=""'>
+				last_updated=#{lastUpdated},
+			</if>
+			<if test='logoUrl!= null and logoUrl!=""'>
+				logo_url=#{logoUrl},
+			</if>
+		</set>
+		where id_key = #{idKey}
+	</update>
+
+	<select id="queryBydeptID" parameterType="java.lang.Long"
+		resultMap="sysCommunityMap">
+		select * from sys_community t where t.dept_id = #{deptId}
+	</select>
+	
+	<!-- 根据父节点id和该用户的权限查询 -->
+	<select id="queryBydeptIdAndPopedomIds" parameterType="java.lang.Long"
+		resultMap="sysCommunityMap">
+		select * from sys_community t where t.dept_id = #{deptId} and t.id_key in <foreach item="item" index="index" collection="communityIds"
+			open="(" separator="," close=")"> #{item}</foreach>
+	</select>
+	
+	<select id="isHaveCommunity" parameterType="java.lang.Long"
+		resultMap="sysCommunityMap">
+		select * from sys_community t where t.dept_id = #{deptId}
+	</select>
+	<update id="updateDeptIDByIdKey" parameterType="java.util.Map">
+		update
+		sys_community SET dept_id = #{deptID} WHERE id_key = #{idKey}
+	</update>
+	<select id="edit" parameterType="java.lang.Long" resultMap="sysCommunityMap">
+		select * from sys_community t where t.id_key = #{idKey}
+	</select>
+
+	<!-- xzmAdd201331 查询同级中排序码最大值加10 -->
+	<select id="queryMaxOrderCdByPId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		select max(order_cd)+10 from sys_community a where
+		a.dept_id = #{deptId}
+	</select>
+
+	<select id="queryList" resultMap="sysCommunityMap"
+		parameterType="java.lang.Long">
+		select a.* from sys_community a where a.id_key =
+		#{userId}
+	</select>
+	<select id="queryCommunityVOById" resultMap="sysCommunityVOMap"
+		parameterType="java.lang.Long">
+		select a.*, b.cd_nm as district,c.cd_nm as city ,d.cd_nm
+		as province from sys_community a
+		left join sys_dept b on a.dept_id =
+		b.id_key
+		left join sys_dept c on b.parent_id =c.id_key
+		left join
+		sys_dept d on c.parent_id =d.id_key
+		where a.id_key = #{communityId}
+	</select>
+
+	<select id="queryByIdKeyForPage" resultMap="sysCommunityMap"
+		parameterType="Page">
+		select * from sys_community where id_key=#{params.idKey}
+	</select>
+
+	<insert id="insertAppendInfo" parameterType="SysCommunity"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into sys_community(
+		id_key,cu_name,order_cd,dept_id,address,pro_user_id,pro_name,cellphone,telephone,use_mark,remark,province_id,city_id,name,leader,leader_phone,summary,security_room_phone,office_phone,community_code,community_no,operate_time,community_name,last_updated,logo_url)
+		values(
+		#{idKey},#{cuName},#{orderCd},#{deptId},#{address},#{proUserId},#{proName},#{cellphone},#{telephone},#{useMark},#{remark},#{provinceId},#{cityId},#{name},#{leader},#{leaderPhone},#{summary},#{securityRoomPhone},#{officePhone},#{communityCode},#{communityNo},#{operateTime},#{communityName},#{lastUpdated},#{logoUrl})
+	</insert>
+
+	<update id="updateAppendInfo" parameterType="SysCommunity">
+		update sys_community
+		<set>
+			<if test='cuName!= null and cuName!=""'>
+				cu_name=#{cuName},
+			</if>
+			<if test='orderCd!= null and orderCd!=""'>
+				order_cd=#{orderCd},
+			</if>
+			<if test='deptId!= null and deptId!=""'>
+				dept_id=#{deptId},
+			</if>
+			<if test='address!= null and address!=""'>
+				address=#{address},
+			</if>
+			<if test='proUserId!= null and proUserId!=""'>
+				pro_user_id=#{proUserId},
+			</if>
+			<if test='proName!= null and proName!=""'>
+				pro_name=#{proName},
+			</if>
+			<if test='cellphone!= null and cellphone!=""'>
+				cellphone=#{cellphone},
+			</if>
+			<if test='telephone!= null and telephone!=""'>
+				telephone=#{telephone},
+			</if>
+			<if test='useMark!= null and useMark!=""'>
+				use_mark=#{useMark},
+			</if>
+			<if test='remark!= null and remark!=""'>
+				remark=#{remark},
+			</if>
+			<if test='provinceId!= null and provinceId!=""'>
+				province_id=#{provinceId},
+			</if>
+			<if test='cityId!= null and cityId!=""'>
+				city_id=#{cityId},
+			</if>
+			<if test='name!= null and name!=""'>
+				name=#{name},
+			</if>
+			<if test='leader!= null and leader!=""'>
+				leader=#{leader},
+			</if>
+			<if test='leaderPhone!= null and leaderPhone!=""'>
+				leader_phone=#{leaderPhone},
+			</if>
+			<if test='summary!= null and summary!=""'>
+				summary=#{summary},
+			</if>
+			<if test='securityRoomPhone!= null and securityRoomPhone!=""'>
+				security_room_phone=#{securityRoomPhone},
+			</if>
+			<if test='officePhone!= null and officePhone!=""'>
+				office_phone=#{officePhone},
+			</if>
+			<if test='communityCode!= null and communityCode!=""'>
+				community_code=#{communityCode},
+			</if>
+			<if test='communityNo!= null and communityNo!=""'>
+				community_no=#{communityNo},
+			</if>
+			<if test='operateTime!= null and operateTime!=""'>
+				operate_time=#{operateTime},
+			</if>
+			<if test='communityName!= null and communityName!=""'>
+				community_name=#{communityName},
+			</if>
+			<if test='lastUpdated!= null and lastUpdated!=""'>
+				last_updated=#{lastUpdated},
+			</if>
+			<if test='logoUrl!= null and logoUrl!=""'>
+				logo_url=#{logoUrl},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+	<select id="mobileQueryCommunityInfo" resultMap="sysCommunityVOMap"
+		parameterType="java.lang.Long">
+		select a.*, b.cd_nm as district,c.cd_nm as city ,d.cd_nm
+		as province , e.display_name as proper_info , e.id_key as
+		proper_info_id,
+		f.display_name as community_info, f.id_key as community_info_id
+		from sys_community a
+		left join sys_dept b on a.dept_id = b.id_key
+		left join sys_dept c on
+		b.parent_id =c.id_key
+		left join sys_dept d on c.parent_id =d.id_key
+		left join sys_community_info e on a.id_key = e.community_id and
+		e.info_type = 1
+		left join sys_community_info f on a.id_key =
+		f.community_id and f.info_type = 2
+		where a.id_key = #{communityId}
+	</select>
+
+	<update id="updateCommunityByName" parameterType="SysCommunity">
+		update sys_community
+		<set>
+			<if test='cuName!= null and cuName!=""'>
+				cu_name=#{cuName},
+			</if>
+			<if test='orderCd!= null and orderCd!=""'>
+				order_cd=#{orderCd},
+			</if>
+			<if test='deptId!= null and deptId!=""'>
+				dept_id=#{deptId},
+			</if>
+			<if test='address!= null and address!=""'>
+				address=#{address},
+			</if>
+			<if test='proUserId!= null and proUserId!=""'>
+				pro_user_id=#{proUserId},
+			</if>
+			<if test='proName!= null and proName!=""'>
+				pro_name=#{proName},
+			</if>
+			<if test='cellphone!= null and cellphone!=""'>
+				cellphone=#{cellphone},
+			</if>
+			<if test='telephone!= null and telephone!=""'>
+				telephone=#{telephone},
+			</if>
+			<if test='useMark!= null and useMark!=""'>
+				use_mark=#{useMark},
+			</if>
+			<if test='remark!= null and remark!=""'>
+				remark=#{remark},
+			</if>
+			<if test='provinceId!= null and provinceId!=""'>
+				province_id=#{provinceId},
+			</if>
+			<if test='cityId!= null and cityId!=""'>
+				city_id=#{cityId},
+			</if>
+			<if test='name!= null and name!=""'>
+				name=#{name},
+			</if>
+			<if test='leader!= null and leader!=""'>
+				leader=#{leader},
+			</if>
+			<if test='leaderPhone!= null and leaderPhone!=""'>
+				leader_phone=#{leaderPhone},
+			</if>
+			<if test='summary!= null and summary!=""'>
+				summary=#{summary},
+			</if>
+			<if test='securityRoomPhone!= null and securityRoomPhone!=""'>
+				security_room_phone=#{securityRoomPhone},
+			</if>
+			<if test='officePhone!= null and officePhone!=""'>
+				office_phone=#{officePhone},
+			</if>
+			<if test='communityCode!= null and communityCode!=""'>
+				community_code=#{communityCode},
+			</if>
+			<if test='communityNo!= null and communityNo!=""'>
+				community_no=#{communityNo},
+			</if>
+			<if test='operateTime!= null and operateTime!=""'>
+				operate_time=#{operateTime},
+			</if>
+			<if test='communityName!= null and communityName!=""'>
+				community_name=#{communityName},
+			</if>
+			<if test='lastUpdated!= null and lastUpdated!=""'>
+				last_updated=#{lastUpdated},
+			</if>
+			<if test='logoUrl!= null and logoUrl!=""'>
+				logo_url=#{logoUrl},
+			</if>
+		</set>
+		where cu_name= #{communityName}
+	</update>
+
+	<select id="queryCommunityByIdKey" resultMap="sysCommunityVOMap"
+		parameterType="java.lang.Long">
+		select * from sys_community where id_key = #{idKey}
+	</select>
+
+	<select id="queryCommunityByName" resultMap="sysCommunityMap"
+		parameterType="java.lang.String">
+		select * from sys_community where cu_name =
+		#{communityName}
+	</select>
+
+	<!-- 根据用户id查询权限小区 -->
+	<select id="queryPopedomCommunityByUserId" resultMap="sysCommunityMap"
+		parameterType="java.lang.Long">
+		SELECT a.* FROM sys_community a WHERE a.province_id IN
+		(SELECT dept_id FROM sys_user_popedom WHERE user_id=#{userId} AND
+		type_id=2) OR a.city_id IN (SELECT dept_id FROM sys_user_popedom WHERE
+		user_id=#{userId} AND type_id=3 ) OR 1 IN (SELECT dept_id FROM
+		sys_user_popedom WHERE user_id=#{userId} AND type_id=1 ) OR a.id_key
+		IN
+		(SELECT dept_id FROM sys_user_popedom WHERE user_id=#{userId} AND
+		type_id=5 )
+	</select>
+	<select id="queryCommunityIdAndCodeByCodes" resultMap="sysCommunityMap">
+		SELECT distinct a.community_code as community_code , a.id_key FROM sys_community as a where a.community_code IS NOT NULL
+	</select>
+</mapper>

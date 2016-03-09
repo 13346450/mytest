@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizReportFormsMapper">
+	<resultMap type="BizReportForms" id="bizReportFormsMap">
+		<result column="goods_id" property="goodsId" />
+		<result column="goods_name" property="goodsName" />
+		<result column="sales_quantity" property="salesQuantity" />
+		<result column="sales_cost" property="salesCost" />
+		<result column="goods_price" property="goodsPrice" />
+	</resultMap>
+	<select id="mobileSearchDailyReport" parameterType="java.util.Map" resultMap="bizReportFormsMap">
+		select t.* from ( select b.goods_id , b.goods_name, IFNULL(sum(b.goods_cost)/sum(b.goods_quantity), 0) as goods_price, sum(b.goods_quantity) as sales_quantity, sum(b.goods_cost) as sales_cost   
+		from biz_order a 
+		LEFT JOIN biz_order_details b on b.order_id = a.id_key 
+		LEFT JOIN biz_goods c on c.id_key = b.goods_id 
+		<where>
+			a.shop_id = #{shopId} and a.order_dt BETWEEN #{startDt} and #{endDt} 
+			<if test='goodsTypeId!= -1 and goodsTypeId!=""'>
+				and find_in_set(c.goods_type_id, queryChildrenCategory(#{goodsTypeId})) 
+			</if>
+			 and a.order_status = 5
+		</where> 
+		GROUP BY b.goods_id, b.goods_name 
+		UNION ALL 
+		SELECT '总计' as goods_id, '' as goods_name, null as goods_price, sum(b.goods_quantity) as sales_quantity, sum(b.goods_cost) as sales_cost   
+		from biz_order a 
+		LEFT JOIN biz_order_details b on b.order_id = a.id_key 
+		LEFT JOIN biz_goods c on c.id_key = b.goods_id 
+		<where>
+			a.shop_id = #{shopId} and a.order_dt BETWEEN #{startDt} and #{endDt} 
+			<if test='goodsTypeId!= -1 and goodsTypeId!=""'>
+				and find_in_set(c.goods_type_id, queryChildrenCategory(#{goodsTypeId})) 
+			</if>
+			 and a.order_status = 5
+		</where> 
+		) t ORDER BY 
+		<if test="sortType == 1">
+			t.sales_cost  asc 
+		</if>
+		<if test="sortType == 2">
+			t.sales_quantity  asc 
+		</if>
+	</select>
+	
+</mapper>

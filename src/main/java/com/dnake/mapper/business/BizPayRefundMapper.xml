@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizPayRefundMapper">
+	<resultMap type="BizPayRefund" id="BizPayRefund">
+		<id column="idKey" property="idKey" />
+		<result column="receiveDate" property="receiveDate" />
+		<result column="type" property="type" />
+		<result column="alipayParams" property="alipayParams" />
+		<result column="alipayBatchNo" property="alipayBatchNo" />
+		<result column="alipaySuccessNum" property="alipaySuccessNum" />
+		<result column="alipayResultDetails" property="alipayResultDetails" />
+		<result column="alipayNotifyTime" property="alipayNotifyTime" />
+		<result column="alipayNotifyType" property="alipayNotifyType" />
+		<result column="alipayNotifyId" property="alipayNotifyId" />
+		<result column="alipaySignType" property="alipaySignType" />
+		<result column="alipaySign" property="alipaySign" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizPayment"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_payment(
+			idKey,
+			type,
+			alipayParams,
+			alipayBatchNo,
+			alipaySuccessNum,
+			alipayResultDetails,
+			receiveDate,
+			alipayNotifyTime,
+			alipayNotifyType,
+			alipayNotifyId,
+			alipaySignType,
+			alipaySign
+		)
+		values(
+			#{idKey},
+			#{type},
+			#{alipayParams},
+			#{alipayBatchNo},
+			#{alipaySuccessNum},
+			#{alipayResultDetails},
+			#{receiveDate},
+			#{alipayNotifyTime},
+			#{alipayNotifyType},
+			#{alipayNotifyId},
+			#{alipaySignType},
+			#{alipaySign}
+		)
+	</insert>
+</mapper>

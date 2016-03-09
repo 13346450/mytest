@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.system.SysAboutUSMapper">
+	<resultMap type="SysAboutUS" id="SysAboutUSMap">
+		<id column="id_key" property="idKey" />
+		<result column="aboutus_title" property="aboutUSTitle" />
+		<result column="aboutus_subtitle" property="aboutUSSubtitle" />
+		<result column="aboutus_content" property="aboutUSContent" />
+	</resultMap>
+
+	<resultMap type="SysAboutUSVO" id="SysAboutUSList">
+		<id column="id_key" property="idKey" />
+		<result column="aboutus_title" property="aboutUSTitle" />
+		<result column="aboutus_subtitle" property="aboutUSSubtitle" />
+		<result column="aboutus_content" property="aboutUSContent" />
+	</resultMap>
+
+	<insert id="insert" parameterType="SysAboutUS" useGeneratedKeys="true" keyProperty="idKey">
+		insert into sys_aboutus(id_key, aboutus_title, aboutus_subtitle, aboutus_content)
+		values(#{idKey}, #{aboutUSTitle}, #{aboutUSSubtitle}, #{aboutUSContent})
+	</insert>
+	
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into sys_aboutus(id_key, aboutus_title, aboutus_subtitle, aboutus_content)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.idKey}, #{item.aboutUSTitle}, #{item.aboutUSSubtitle}, #{item.aboutUSContent})
+		</foreach>
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_aboutus where id_key=#{idKey}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from sys_aboutus where id_key in
+		<foreach item="item" index="index" collection="deviceIdin" open="(" separator="," close=")">
+			${item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="SysAboutUS">
+		update sys_aboutus
+		<set>
+			<if test='aboutUSTitle!= null and aboutUSTitle!=""'>
+				aboutus_title=#{aboutUSTitle},
+			</if>
+			<if test='aboutUSSubtitle!=null and aboutUSSubtitle!=""'>
+				aboutus_subtitle=#{aboutUSSubtitle},
+			</if>
+			<if test='aboutUSContent!=null and aboutUSContent!=""'>
+				aboutus_content=#{aboutUSContent},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+	<select id="queryByIdKey" resultMap="SysAboutUSMap" parameterType="java.lang.Long">
+		select * from sys_aboutus where id_key=#{idKey}
+	</select>
+
+	<select id="listPage" resultMap="SysAboutUSList" parameterType="Page">
+		select * from sys_aboutus
+	</select>
+	
+	<select id="list" resultMap="SysAboutUSList" parameterType="SearchParam">
+		select * from sys_aboutus
+	</select>
+	<select id="queryFirst" resultMap="SysAboutUSMap">
+		select * from sys_aboutus limit 1
+	</select>
+</mapper>

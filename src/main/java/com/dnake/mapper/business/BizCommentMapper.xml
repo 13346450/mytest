@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizCommentMapper">
+	<resultMap type="BizComment" id="bizCommentMap">
+		<id column="id_key" property="idKey" />
+		<result column="parent_id" property="parentId" />
+		<result column="content" property="content" />
+		<result column="goods_id" property="goodsId" />
+		<result column="shop_id" property="shopId" />
+		<result column="order_id" property="orderId" />
+		<result column="goods_score" property="goodsScore" />
+		<result column="publish_dt" property="publishDt" />
+		<result column="type" property="type" />
+		<result column="is_null_user" property="isNullUser" />
+		<result column="user_id" property="userId" />
+		<result column="is_reply" property="isReply" />
+		<result column="logistics_score" property="logisticsScore" />
+		<result column="service_score" property="serviceScore" />
+		<result column="delivery_score" property="deliveryScore" />
+		<result column="comment_level" property="commentLevel" />
+	</resultMap>
+
+	<resultMap type="BizCommentVO" id="bizCommentList">
+		<id column="id_key" property="idKey" />
+		<result column="parent_id" property="parentId" />
+		<result column="content" property="content" />
+		<result column="goods_id" property="goodsId" />
+		<result column="shop_id" property="shopId" />
+		<result column="order_id" property="orderId" />
+		<result column="goods_score" property="goodsScore" />
+		<result column="publish_dt" property="publishDt" />
+		<result column="type" property="type" />
+		<result column="is_null_user" property="isNullUser" />
+		<result column="user_id" property="userId" />
+		<result column="is_reply" property="isReply" />
+		<result column="logistics_score" property="logisticsScore" />
+		<result column="service_score" property="serviceScore" />
+		<result column="delivery_score" property="deliveryScore" />
+		<result column="comment_level" property="commentLevel" />
+
+		<result column="goods_name" property="goodsName" />
+		<result column="goods_image_url" property="goodsImageUrl" />
+		<result column="goods_type" property="goodsType" />
+		<result column="user_name" property="userName" />
+		<result column="shops_reply_first" property="shopsReplyFirst" />
+		<result column="shop_reply_second" property="shopReplySecond" />
+		<result column="user_append_comment" property="userAppendComment" />
+		<result column="goods_ave_score" property="goodsAveScore" />
+		<result column="comment_count" property="commentCount" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizComment" useGeneratedKeys="true"
+		keyProperty="idKey">
+		insert into biz_comment(
+		id_key,parent_id,content,goods_id,shop_id ,order_id,goods_score,publish_dt,type,is_null_user,user_id,is_reply,logistics_score,service_score,delivery_score,comment_level)
+		values(
+		#{idKey},#{parentId},#{content},#{goodsId},#{shopId},#{orderId},#{goodsScore},#{publishDt},#{type},#{isNullUser},#{userId},#{isReply},#{logisticsScore},#{serviceScore},#{deliveryScore},#{commentLevel})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_comment where id_key=#{idKey}
+	</delete>
+
+	<update id="update" parameterType="BizComment">
+		update biz_comment
+		<set>
+			<if test='parentId!= null and parentId!=""'>
+				parent_id=#{parentId},
+			</if>
+			<if test='content!= null and content!=""'>
+				content=#{content},
+			</if>
+			<if test='goodsId!= null and goodsId!=""'>
+				goods_id=#{goodsId},
+			</if>
+			<if test='shopId!= null and shopId!=""'>
+				shop_id=#{shopId},
+			</if>
+			<if test='orderId!= null and orderId!=""'>
+				order_id=#{orderId},
+			</if>
+			<if test='goodsScore!= null and goodsScore!=""'>
+				goods_score=#{goodsScore},
+			</if>
+			<if test='publishDt!= null and publishDt!=""'>
+				publish_dt=#{publishDt},
+			</if>
+			<if test='type!= null and type!=""'>
+				type=#{type},
+			</if>
+			<if test='isNullUser!= null and isNullUser!=""'>
+				is_null_user=#{isNullUser},
+			</if>
+			<if test='userId!= null and userId!=""'>
+				user_id=#{userId},
+			</if>
+			<if test='isReply!= null and isReply!=""'>
+				is_reply=#{isReply},
+			</if>
+			<if test='logisticsScore!= null and logisticsScore!=""'>
+				logistics_score=#{logisticsScore},
+			</if>
+			<if test='serviceScore!= null and serviceScore!=""'>
+				service_score=#{serviceScore},
+			</if>
+			<if test='deliveryScore!= null and deliveryScore!=""'>
+				delivery_score=#{deliveryScore},
+			</if>
+			<if test='commentLevel!= null and commentLevel!=""'>
+				comment_level=#{commentLevel},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+	<select id="queryByIdkey" resultMap="bizCommentMap"
+		parameterType="java.lang.Long">
+		select * from biz_comment where id_key=#{idKey}
+	</select>
+
+	<select id="queryPage" resultMap="bizCommentList" parameterType="Page">
+		null
+		<!--<where> chg_dt between #{params.startDatetime} and #{params.endDatetime} 
+			<if test='params.name != null and params.name != ""'> and br.name=#{params.name} 
+			</if> </where> -->
+	</select>
+
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_comment where id_key in
+		<foreach item="item" index="index" collection="deviceIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into biz_comment(
+		parent_id,content,goods_id, shop_id,order_id,goods_score,publish_dt,type,is_null_user,user_id,is_reply,logistics_score,service_score,delivery_score,comment_level)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.parentId},#{item.content},#{item.goodsId},#{item.shopId},#{item.orderId},#{item.goodsScore},#{item.publishDt},#{item.type},#{item.isNullUser},#{item.userId},#{logisticsScore},#{serviceScore},#{deliveryScore},#{item.commentLevel})
+		</foreach>
+	</insert>
+	
+<!-- 	<select id="mobileQueryCommentByGoodsId" resultMap="bizCommentList" parameterType="Page">
+		select a.*, b.content as user_append_comment, c.content as
+		shops_reply_second, d.content as shops_reply_first, e.cd_nm as
+		user_name, f.goods_name as goods_name, f.simages as goods_image_url
+		from biz_comment a
+		left join biz_comment b on a.id_key = b.parent_id and b.type = 1
+		left join biz_comment c on b.id_key = c.parent_id and c.type = 2
+		left join biz_comment d on a.id_key = d.parent_id and d.type = 2
+		left join sys_user e on a.user_id = e.id_key 
+		left join biz_goods f on a.goods_id = f.id_key 
+		<where>
+			a.parent_id = 0 and a.goods_id = #{params.goodsId}
+		</where>
+		order by a.publish_dt desc
+	</select> -->
+	
+	<select id="mobileQueryCommentByGoodsId" resultMap="bizCommentList" parameterType="Page">
+		select a.*, e.cd_nm as user_name, d.content as shops_reply_first,
+		f.goods_name as goods_name, f.simages as goods_image_url 
+		from biz_comment a
+		left join biz_comment d on a.id_key = d.parent_id and d.type = 2
+		left join sys_user e on a.user_id = e.id_key 
+		left join biz_goods f on a.goods_id = f.id_key 
+		<where>
+			a.parent_id = 0 and a.goods_id = #{params.goodsId}
+		</where>
+		order by a.publish_dt desc
+	</select>
+	
+	<select id="mobileQueryCommentByShopId" resultMap="bizCommentList" parameterType="Page">
+		select a.*, e.cd_nm as user_name, d.content as shops_reply_first, f.goods_name as goods_name, f.simages as goods_image_url
+		from biz_comment a
+		left join biz_comment d on a.id_key = d.parent_id and d.type = 2 
+		left join sys_user e on a.user_id = e.id_key 
+		left join biz_goods f on a.goods_id = f.id_key 
+		<where>
+			a.type = 0 and a.shop_id = #{params.shopId}
+		</where>
+		order by a.publish_dt desc
+	</select>
+
+	
+	<select id="mobileGoodsScoreDetail" resultMap="bizCommentList"
+		parameterType="java.lang.Long">
+		select * from biz_comment where id_key=#{idKey}
+	</select>
+	
+	<select id="queryCommentCount" resultMap="bizCommentList"
+		parameterType="java.lang.Long">
+		select AVG(goods_score) as goods_ave_score, count(*) as comment_count from biz_comment where goods_id = #{goodsId} and type = 0
+	</select>
+	
+	<select id="queryCommentIsReply" resultMap="bizCommentList" parameterType="java.util.Map">
+		select * from biz_comment where goods_id = #{goodsId} and order_id = #{orderId} and type=0
+	</select>
+</mapper>

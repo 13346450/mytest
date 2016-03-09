@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizMessageMapper">
+	<resultMap type="BizMessage" id="bizMessageMap">
+		<id column="id_key" property="idKey" />
+		<result column="title" property="title" />
+		<result column="message" property="message" />
+		<result column="order_dt" property="orderDt" />
+		<result column="user_cd" property="userCd" />
+	</resultMap>
+	
+
+	<!-- 删除消息 -->
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_message where id_key = #{idKey}
+	</delete>
+	<!-- 插入消息 -->
+	<insert id="insert" parameterType="BizMessage" useGeneratedKeys="true" keyProperty="idKey">		
+		insert into biz_message
+		(id_key, user_cd, title, message, order_dt)
+		values
+		(#{idKey}, #{userCd}, #{title}, #{message}, #{orderDt})
+	</insert>
+	<!-- 根据ID查找信息 -->
+	<select id="queryById" parameterType="java.lang.Long" resultMap="bizMessageMap">
+		select * from biz_message where id_key=#{idKey}
+	</select>
+	<select id="queryAll" resultMap="bizMessageMap">
+    	select * from biz_message 
+    </select>
+	
+</mapper>

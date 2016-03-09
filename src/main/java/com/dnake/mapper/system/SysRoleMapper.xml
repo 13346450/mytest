@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.system.SysRoleMapper">
+	<resultMap type="SysRole" id="sysRoleMap">
+		<id column="id_key" property="idKey"/>
+		<result column="role_name" property="roleName"/>
+		<result column="role_type" property="roleType"/>
+		<result column="role_remark" property="roleRemark"/>
+		<result column="chg_dt" property="chgDt"/>
+	</resultMap>
+
+	<select id="queryAll" resultMap="sysRoleMap">
+		select * from sys_role order by id_key asc
+	</select>
+	
+	<select id="queryRoleByIdKey" resultMap="sysRoleMap" parameterType="java.lang.Long">
+	    select * from sys_role t where t.id_key = #{idKey}
+	</select>
+	
+	<update id="update" parameterType="SysRole">
+	  update sys_role set
+	    role_name = #{roleName},
+	    role_type = #{roleType},
+	    role_remark = #{roleRemark},
+	    chg_dt = #{chgDt}
+	  where id_key = #{idKey}	  
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+	  delete from sys_role where id_key = #{idKey}
+	</delete>
+	
+	<insert id="insert" parameterType="SysRole" useGeneratedKeys="true" keyProperty="idKey">
+		insert into sys_role(id_key, role_name, role_type, role_remark , chg_dt)
+		values(#{idKey}, #{roleName}, #{roleType}, #{roleRemark}, #{chgDt})
+	</insert>
+	
+	<select id="queryPage" resultMap="sysRoleMap" parameterType="Page">
+		select t.*	from sys_role t order by ROLE_TYPE asc
+	</select>
+	
+	<!-- xzmAdd201331 根据登录名查询用户等级 -->
+	<select id="queryGradeByLoginNm" parameterType="java.lang.String" resultType="java.lang.Long">
+	   select b.ROLE_TYPE from sys_user a,sys_role b where a.role_id=b.id_key and LOGIN_NM=#{loginNm}
+	</select>
+	
+	<!-- xzmAdd201331 根据登录名查询用户等级 -->
+	<select id="getRoleByGrade" resultMap="sysRoleMap" parameterType="java.lang.Long">
+	select * from sys_role where ROLE_TYPE<![CDATA[>=]]>#{grade} order by ROLE_TYPE asc
+	</select>
+</mapper>

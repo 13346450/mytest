@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizAdvertMapper">
+	<resultMap type="BizAdvert" id="bizAdvertMap">
+		<id column="id_key" property="idKey" />
+		<result column="adv_version" property="advVersion" />
+		<result column="images_url" property="imagesUrl" />
+		<result column="links_url" property="linksUrl" />
+		<result column="maker_id" property="makerId" />
+		<result column="maker_dt" property="makerDt"/>
+		<result column="audit_id" property="auditId" />
+		<result column="audit_dt" property="auditDt" />
+		<result column="publish_id" property="publishId" />
+		<result column="publish_dt" property="publishDt" />
+		<result column="adv_status" property="advStatus" />
+	</resultMap>
+	
+	<resultMap type="BizAdvertVO" id="bizAdvertList">
+		<id column="id_key" property="idKey" />
+		<result column="adv_version" property="advVersion" />
+		<result column="images_url" property="imagesUrl" />
+		<result column="links_url" property="linksUrl" />
+		<result column="maker_id" property="makerId" />
+		<result column="maker_dt" property="makerDt"/>
+		<result column="audit_id" property="auditId" />
+		<result column="audit_dt" property="auditDt" />
+		<result column="publish_id" property="publishId" />
+		<result column="publish_dt" property="publishDt" />
+		<result column="adv_status" property="advStatus" />
+
+		<result column="maker_nm" property="makerNm" />
+		<result column="audit_nm" property="auditNm" />
+		<result column="publish_nm" property="publishNm" />
+		<result column="status_nm" property="advStatusNm" />
+	</resultMap>
+
+	<!-- 更新广告状态 -->
+	<update id="updateStatus" parameterType="java.util.Map">
+		update biz_advert 
+		<set>
+	        <if test="oper == 'audit'">
+	            audit_id = #{auditId}, audit_dt = #{auditDt}, adv_status = #{advStatus}
+	        </if>	       
+	        <if test="oper == 'publish'">
+	            publish_id = #{publishId}, publish_dt = #{publishDt}, adv_status = #{advStatus}
+	        </if>
+	    </set>
+		where id_key = #{idKey}
+	</update>
+
+	<update id="update" parameterType="BizAdvert">
+		update biz_advert 
+		<set>
+	            adv_version = #{advVersion},
+	            images_url = #{imagesUrl},
+	            links_url = #{linksUrl},
+	            maker_id = #{makerId},
+	            maker_dt = #{makerDt},
+	            audit_id = #{auditId},
+	            audit_dt = #{auditDt},
+	            publish_id = #{publishId},
+	            publish_dt = #{publishDt},
+	            adv_status = #{advStatus}
+	    </set>
+	    where id_key = #{idKey}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from biz_advert where id_key = #{idKey}
+	</delete>
+	
+	<insert id="insert" parameterType="BizAdvert" useGeneratedKeys="true" keyProperty="idKey">		
+		insert into biz_advert
+		(id_key, adv_version, images_url, links_url, maker_id, maker_dt,	adv_status)
+		values
+		(#{idKey},#{advVersion},#{imagesUrl},#{linksUrl},#{makerId},#{makerDt},#{advStatus})
+	</insert>
+	
+	<select id="queryByIdkey" parameterType="java.lang.Long" resultMap="bizAdvertMap">
+		select * from biz_advert where id_key = #{idKey}
+	</select>
+	
+	<select id="queryMaxPublishedVersion" resultMap="bizAdvertMap">
+		select * from biz_advert where adv_status = 2
+			and adv_version = (select max(adv_version) from biz_advert where adv_status = 2)		
+	</select>
+	
+	<select id="getMaxVersionNo" resultType="java.lang.String">
+		select max(adv_version) from biz_advert
+	</select>
+	
+	<select id="queryPage" resultMap="bizAdvertList" parameterType="Page">
+			select a.* ,b.cd_nm as maker_nm,c.cd_nm as audit_nm,d.cd_nm as publish_nm,
+			   if(a.adv_status=0,"未审核",if(a.adv_status=1,"已审核",if(a.adv_status=2,"已发布","未知"))) as status_nm 
+			from biz_advert a 
+			LEFT JOIN sys_user b on a.maker_id=b.id_key
+			LEFT JOIN sys_user c on a.audit_id=c.id_key 
+			LEFT JOIN sys_user d on a.publish_id=d.id_key 
+			<where>
+				a.maker_dt between #{params.startDatetime} and #{params.endDatetime} 
+			<if test='params.advStatus != -1 '>
+				and a.adv_status = #{params.advStatus}
+			</if>
+		</where>
+	</select>
+		
+</mapper>

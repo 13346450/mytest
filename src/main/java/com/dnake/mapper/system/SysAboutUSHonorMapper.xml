@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.system.SysAboutUSHonorMapper">
+	<resultMap type="SysAboutUSHonor" id="SysAboutUSHonorMap">
+		<id column="id_key" property="idKey" />
+		<result column="honor_date" property="honorDate" />
+		<result column="honor_name" property="honorName" />
+		<result column="honor_big_imageurl" property="honorBigImageUrl" />
+		<result column="honor_small_imageurl" property="honorSmallImageUrl" />
+		<result column="award_org" property="awardOrg" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<resultMap type="SysAboutUSHonorVO" id="SysAboutUSHonorList">
+		<id column="id_key" property="idKey" />
+		<result column="honor_date" property="honorDate" />
+		<result column="honor_name" property="honorName" />
+		<result column="honor_big_imageurl" property="honorBigImageUrl" />
+		<result column="honor_small_imageurl" property="honorSmallImageUrl" />
+		<result column="award_org" property="awardOrg" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<insert id="insert" parameterType="SysAboutUSHonor" useGeneratedKeys="true" keyProperty="idKey">
+		insert into sys_aboutus_honor(id_key, honor_date, honor_name, honor_big_imageurl, honor_small_imageurl, award_org, remark)
+		values(#{idKey}, #{honorDate}, #{honorName}, #{honorBigImageUrl}, #{honorSmallImageUrl}, #{awardOrg}, #{remark})
+	</insert>
+	
+	<insert id="insertMulti" parameterType="java.util.List">
+		insert into sys_aboutus_honor(id_key, honor_date, honor_name, honor_big_imageurl, honor_small_imageurl, award_org, remark)
+		values
+		<foreach collection="list" item="item" separator="," index="index">
+			(#{item.idKey}, #{item.honorDate}, #{item.honorName}, #{item.honorBigImageUrl}, #{item.honorSmallImageUrl}, #{item.awardOrg}, #{item.remark})
+		</foreach>
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_aboutus_honor where id_key=#{idKey}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from sys_aboutus_honor where id_key in
+		<foreach item="item" index="index" collection="deviceIdin" open="(" separator="," close=")">
+			${item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="SysAboutUSHonor">
+		update sys_aboutus_honor
+		<set>
+			<if test='honorDate!= null and honorDate!=""'>
+				honor_date=#{honorDate},
+			</if>
+			<if test='honorName!=null and honorName!=""'>
+				honor_name=#{honorName},
+			</if>
+			<if test='honorBigImageUrl!=null and honorBigImageUrl!=""'>
+				honor_big_imageurl=#{honorBigImageUrl},
+			</if>
+			<if test='honorSmallImageUrl!= null and honorSmallImageUrl!=""'>
+				honor_small_imageurl=#{honorSmallImageUrl},
+			</if>
+			<if test='awardOrg!= null and awardOrg!=""'>
+				award_org=#{awardOrg},
+			</if>
+			<if test='remark!= null and remark!=""'>
+				remark=#{remark},
+			</if>
+		</set>
+		where id_key= #{idKey}
+	</update>
+
+	<select id="listPage" resultMap="SysAboutUSHonorList" parameterType="Page">
+		select * from sys_aboutus_honor
+	</select>
+	
+	<select id="list" resultMap="SysAboutUSHonorList" parameterType="SearchParam">
+		select * from sys_aboutus_honor
+	</select>
+
+	<select id="queryByIdKey" resultMap="SysAboutUSHonorMap" parameterType="java.lang.Long">
+		select * from sys_aboutus_honor where id_key=#{idKey}
+	</select>
+</mapper>

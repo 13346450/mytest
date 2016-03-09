@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dnake.mapper.business.BizGoodsImageMapper">
+	<resultMap type="BizGoodsImage" id="bizGoodsImageMap">
+		<id column="id_key" property="idKey" />
+		<result column="goods_id" property="goodsId" />
+		<result column="img_url" property="imgUrl" />
+		<result column="is_default" property="isDefault" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BizGoodsImage"
+		useGeneratedKeys="true" keyProperty="idKey">
+		insert into biz_goods_image(id_key,goods_id,img_url,is_default)
+		values(#{idKey},#{goodsId},#{imgUrl},#{isDefault})
+	</insert>
+
+	<delete id="deleteByGoodsId" parameterType="java.lang.Long">
+		delete from biz_goods_image where goods_id=#{goodsId}
+	</delete>
+
+	<select id="queryByGoodsId" resultMap="bizGoodsImageMap"
+		parameterType="java.lang.Long">
+		select * from biz_goods_image where goods_id=#{goodsId}
+	</select>
+	
+	<delete id="deleteMulti" parameterType="java.util.Map">
+		delete from biz_goods_image where id_key in
+		<foreach item="item" index="index" collection="imagesIdin"
+			open="(" separator="," close=")">${item}</foreach>
+	</delete>
+</mapper>
